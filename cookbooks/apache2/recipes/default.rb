@@ -74,13 +74,16 @@ if platform?("redhat", "centos", "scientific", "fedora", "arch", "suse" )
     group "root"
   end
 
-  %w{sites-available sites-enabled mods-available mods-enabled}.each do |dir|
-    directory "#{node[:apache][:dir]}/#{dir}" do
-      mode 0755
-      owner "root"
-      group "root"
-      action :create
-    end
+  case node[:platform]
+    when "redhat","centos","scientific","fedora","suse"
+      %w{sites-available sites-enabled mods-available mods-enabled}.each do |dir|
+        directory "#{node[:apache][:dir]}/#{dir}" do
+          mode 0755
+          owner "root"
+          group "root"
+          action :create
+        end
+      end
   end
 
   execute "generate-module-list" do
@@ -93,15 +96,18 @@ if platform?("redhat", "centos", "scientific", "fedora", "arch", "suse" )
     action :run
   end
 
-  %w{a2ensite a2dissite a2enmod a2dismod}.each do |modscript|
-    template "/usr/sbin/#{modscript}" do
-      source "#{modscript}.erb"
-      mode 0755
-      owner "root"
-      group "root"
+  case node[:platform]
+    when "redhat","centos","scientific","fedora","suse"
+      %w{a2ensite a2dissite a2enmod a2dismod}.each do |modscript|
+        template "/usr/sbin/#{modscript}" do
+          source "#{modscript}.erb"
+          mode 0755
+          owner "root"
+          group "root"
+        end
+      end
     end
   end
-
   # installed by default on centos/rhel, remove in favour of mods-enabled
   %w{ proxy_ajp auth_pam authz_ldap webalizer ssl welcome }.each do |f|
     file "#{node[:apache][:dir]}/conf.d/#{f}.conf" do
@@ -203,6 +209,7 @@ include_recipe "apache2::mod_env"
 include_recipe "apache2::mod_mime"
 include_recipe "apache2::mod_negotiation"
 include_recipe "apache2::mod_setenvif"
+include_recipe "apache2::mod_rewrite"
 include_recipe "apache2::mod_log_config" if platform?("redhat", "centos", "scientific", "fedora", "suse", "arch")
 
 apache_site "default" if platform?("redhat", "centos", "scientific", "fedora")
