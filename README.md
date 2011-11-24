@@ -1,3 +1,7 @@
+Intro
+=====
+This repo contains presets, that needed to bootstrap clodo.ru stacks
+
 Overview
 ========
 
