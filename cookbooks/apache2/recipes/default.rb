@@ -121,7 +121,6 @@ if platform?("redhat", "centos", "scientific", "fedora", "arch", "suse" )
     action :delete
     backup false
   end
-end
 
 directory "#{node[:apache][:dir]}/ssl" do
   action :create

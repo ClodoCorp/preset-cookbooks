@@ -1,21 +1,48 @@
-#
-# Cookbook Name:: mysql
-# Recipe:: default
-#
-# Copyright 2008-2011, Opscode, Inc.
-#
-# Licensed under the Apache License, Version 2.0 (the "License");
-# you may not use this file except in compliance with the License.
-# You may obtain a copy of the License at
-#
-#     http://www.apache.org/licenses/LICENSE-2.0
-#
-# Unless required by applicable law or agreed to in writing, software
-# distributed under the License is distributed on an "AS IS" BASIS,
-# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
-# See the License for the specific language governing permissions and
-# limitations under the License.
-#
+
+class Chef::Recipe::Config_mysql 	# add class 
+  include Config_mysql 		# mix module mysql_config.rb from libraries
+end
+
+def retvar(val, vdef)
+   if (defined?(val)).nil?
+      vdef = val
+   else
+      val =  vdef
+   end
+   return val
+end
+
+def set_vars(value)
+   $max_memory		= value
+
+   mc = Chef::Recipe::Config_mysql.new($max_memory, $max_memory)
+#   node['mysql']['mysqld']['key_buffer_size'] = "tset"
+   node['mysql']['mysqld']['key_buffer_size'] = retvar(node['mysql']['mysqld']['key_buffer_size'], mc.key_buffer_size)
+   node['mysql']['mysqld']['sort_buffer_size'] = retvar(node['mysql']['mysqld']['sort_buffer_size'], mc.sort_buffer_size)
+   node['mysql']['mysqld']['join_buffer_size'] = retvar(node['mysql']['mysqld']['join_buffer_size'], mc.join_buffer_size)	    
+   node['mysql']['mysqld']['read_buffer_size'] = retvar(node['mysql']['mysqld']['read_buffer_size'], mc.read_buffer_size)	    
+   node['mysql']['mysqld']['read_rnd_buffer_size'] = retvar(node['mysql']['mysqld']['read_rnd_buffer_size'], mc.read_rnd_buffer_size)
+   node['mysql']['mysqld']['query_cache_limit'] = retvar(node['mysql']['mysqld']['query_cache_limit'], mc.query_cache_limit)
+   node['mysql']['mysqld']['query_cache_size'] = retvar(node['mysql']['mysqld']['query_cache_size'], mc.query_cache_size)
+   node['mysql']['mysqld']['table_open_cache'] = retvar(node['mysql']['mysqld']['table_open_cache'], mc.table_open_cache)
+   node['mysql']['mysqld']['table_definition_cache'] = retvar(node['mysql']['mysqld']['table_definition_cache'], mc.table_definition_cache)
+   node['mysql']['mysqld']['thread_stack'] = retvar(node['mysql']['mysqld']['thread_stack'], mc.thread_stack)
+   node['mysql']['mysqld']['thread_cache_size'] = retvar(node['mysql']['mysqld']['thread_cache_size'], mc.thread_cache_size)
+   node['mysql']['mysqld']['max_allowed_packet'] = retvar(node['mysql']['mysqld']['max_allowed_packet'], mc.max_allowed_packet)
+   node['mysql']['mysqld']['max_heap_table_size'] = retvar(node['mysql']['mysqld']['max_heap_table_size'], mc.max_heap_table_size)
+   node['mysql']['mysqld']['tmp_table_size'] = retvar(node['mysql']['mysqld']['tmp_table_size'], mc.tmp_table_size)
+   node['mysql']['mysqld']['myisam_sort_buffer_size'] = retvar(node['mysql']['mysqld']['myisam_sort_buffer_size'], mc.myisam_sort_buffer_size)
+   node['mysql']['mysqld']['innodb_log_file_size'] = retvar(node['mysql']['mysqld']['innodb_log_file_size'], mc.innodb_log_file_size)
+   node['mysql']['mysqld']['innodb_log_buffer_size'] = retvar(node['mysql']['mysqld']['innodb_log_buffer_size'], mc.innodb_log_buffer_size)
+   node['mysql']['mysqld']['innodb_buffer_pool_size'] = retvar(node['mysql']['mysqld']['innodb_buffer_pool_size'], mc.innodb_buffer_pool_size)
+   node['mysql']['mysqld']['innodb_additional_mem_pool_size'] = retvar(node['mysql']['mysqld']['innodb_additional_mem_pool_size'], mc.innodb_additional_mem_pool_size)
+   node['mysql']['mysqld']['innodb_thread_concurrency'] = retvar(node['mysql']['mysqld']['innodb_thread_concurrency'], mc.innodb_thread_concurrency)
+   node['mysql']['mysqld']['max_connections'] = retvar(node['mysql']['mysqld']['max_connections'], mc.max_connections)
+   mc = nil
+end
+
+#node.load_attribute_by_short_filename('default', 'mysql')
+set_vars(60)
 
 include_recipe "mysql::client"
 
@@ -26,19 +53,12 @@ node.set_unless['mysql']['server_repl_password']   = "test"
 
 if platform?(%w{debian ubuntu})
 
-  directory "/var/cache/local/preseeding" do
-    owner "root"
-    group "root"
-    mode 0755
-    recursive true
-  end
-
   execute "preseed mysql-server" do
-    command "debconf-set-selections /var/cache/local/preseeding/mysql-server.seed"
+    command "debconf-set-selections /tmp/mysql-server.seed"
     action :nothing
   end
 
-  template "/var/cache/local/preseeding/mysql-server.seed" do
+  template "/tmp/mysql-server.seed" do
     source "mysql-server.seed.erb"
     owner "root"
     group "root"
@@ -46,28 +66,21 @@ if platform?(%w{debian ubuntu})
     notifies :run, resources(:execute => "preseed mysql-server"), :immediately
   end
 
-  template "#{node['mysql']['conf_dir']}/debian.cnf" do
+#  %w{mysql-server.seed}.each do |f|
+#    file "/tmp/#{f}" do
+#      action :delete
+#      backup 0
+#    end
+#  end
+
+
+  template "#{node['mysql']['mysqld']['conf_dir']}/debian.cnf" do
     source "debian.cnf.erb"
     owner "root"
     group "root"
     mode "0600"
   end
 
-end
-
-package "mysql-server" do
-  action :install
-end
-
-service "mysql" do
-  service_name value_for_platform([ "centos", "redhat", "suse", "fedora" ] => {"default" => "mysqld"}, "default" => "mysql")
-  if (platform?("ubuntu") && node.platform_version.to_f >= 10.04)
-    restart_command "restart mysql"
-    stop_command "stop mysql"
-    start_command "start mysql"
-  end
-  supports :status => true, :restart => true, :reload => true
-  action :nothing
 end
 
 skip_federated = case node['platform']
@@ -79,26 +92,81 @@ skip_federated = case node['platform']
                    false
                  end
 
-template "#{node['mysql']['conf_dir']}/my.cnf" do
+
+directory "#{node['mysql']['mysqld']['confd_dir']}" do
+  owner "root"
+  group "root"
+  mode 0755
+  recursive true
+  action :create
+end     
+
+template "#{node['mysql']['mysqld']['confd_dir']}/preset.cnf" do
   source "my.cnf.erb"
   owner "root"
   group "root"
   mode "0644"
-  notifies :restart, resources(:service => "mysql"), :immediately
-  variables :skip_federated => skip_federated
+  variables ( :skip_federated => skip_federated,
+                           :confd_dir => node['mysql']['mysqld']['confd_dir'],
+                           :bind_address => node['mysql']['mysqld']['bind_address'],
+                           :character_set_server => node['mysql']['mysqld']['character_set_server'],
+                           :default_storage_engine => node['mysql']['mysqld']['default_storage_engine'],
+                           :symbolic_links => node['mysql']['mysqld']['symbolic_links'],
+                           :slow_query_log_file => node['mysql']['mysqld']['log_slow_queries'],
+                           :key_buffer_size => node['mysql']['mysqld']['key_buffer_size'],
+                           :sort_buffer_size => node['mysql']['mysqld']['sort_buffer_size'],
+                           :join_buffer_size => node['mysql']['mysqld']['join_buffer_size'],
+                           :read_buffer_size => node['mysql']['mysqld']['read_buffer_size'],
+                           :read_rnd_buffer_size => node['mysql']['mysqld']['read_rnd_buffer_size'],
+                           :query_cache_limit => node['mysql']['mysqld']['query_cache_limit'],
+                           :query_cache_size => node['mysql']['mysqld']['query_cache_size'],
+                           :table_open_cache => node['mysql']['mysqld']['table_open_cache'],
+                           :table_definition_cache => node['mysql']['mysqld']['table_definition_cache'],
+                           :thread_stack => node['mysql']['mysqld']['thread_stack'],
+                           :thread_cache_size => node['mysql']['mysqld']['thread_cache_size'],
+                           :max_allowed_packet => node['mysql']['mysqld']['max_allowed_packet'],
+                           :max_heap_table_size => node['mysql']['mysqld']['max_heap_table_size'],
+                           :tmp_table_size => node['mysql']['mysqld']['tmp_table_size'],
+                           :myisam_sort_buffer_size => node['mysql']['mysqld']['myisam_sort_buffer_size'],
+                           :innodb_log_file_size => node['mysql']['mysqld']['innodb_log_file_size'],
+                           :innodb_log_buffer_size => node['mysql']['mysqld']['innodb_log_buffer_size'],
+                           :innodb_buffer_pool_size => node['mysql']['mysqld']['innodb_buffer_pool_size'],
+                           :innodb_additional_mem_pool_size => node['mysql']['mysqld']['innodb_additional_mem_pool_size'],
+                           :innodb_thread_concurrency => node['mysql']['mysqld']['innodb_thread_concurrency'],
+                           :innodb_flush_log_at_trx_commit => node['mysql']['mysqld']['innodb_flush_log_at_trx_commit'],
+                           :innodb_lock_wait_timeout => node['mysql']['mysqld']['innodb_lock_wait_timeout'],
+                           :innodb_open_files => node['mysql']['mysqld']['innodb_open_files'],
+                           :max_connections => node['mysql']['mysqld']['max_connections'],
+                           :concurrent_insert => node['mysql']['mysqld']['concurrent_insert'],
+                           :query_cache_type => node['mysql']['mysqld']['query_cache_type'],
+                           :net_read_timeout => node['mysql']['mysqld']['net_read_timeout'],
+                           :net_write_timeout => node['mysql']['mysqld']['net_write_timeout'],
+                           :back_log => node['mysql']['mysqld']['back_log'],
+                           :wait_timeout => node['mysql']['mysqld']['wait_timeout'],
+                           :mysqldump_max_allowed_packet => node['mysql']['mysqldump']['max_allowed_packet'],
+                           :myisamchk_key_buffer_size => node['mysql']['myisamchk']['key_buffer_size'],
+                           :myisamchk_sort_buffer_size => node['mysql']['myisamchk']['sort_buffer_size'],
+                           :myisamchk_read_buffer => node['mysql']['myisamchk']['read_buffer'],
+                           :myisamchk_write_buffer => node['mysql']['myisamchk']['write_buffer'] )
 end
 
-unless Chef::Config[:solo]
-  ruby_block "save node data" do
-    block do
-      node.save
-    end
-    action :create
+package "mysql-server" do
+  action :install
+end
+
+service "mysql" do
+  service_name value_for_platform([ "centos", "redhat", "suse", "fedora" ] => {"default" => "mysqld"}, "default" => "mysql")
+  if (platform?("ubuntu") && node.platform_version.to_f >= 10.04)
+    provider Chef::Provider::Service::Upstart
+    restart_command "restart mysql"
+    stop_command "stop mysql"
+    start_command "start mysql"
   end
+  supports :status => true, :restart => true, :reload => true
+  action :nothing
 end
 
-# set the root password on platforms 
-# that don't support pre-seeding
+
 unless platform?(%w{debian ubuntu})
 
   execute "assign-root-password" do
@@ -109,7 +177,7 @@ unless platform?(%w{debian ubuntu})
 
 end
 
-grants_path = "#{node['mysql']['conf_dir']}/mysql_grants.sql"
+grants_path = "#{node['mysql']['mysqld']['conf_dir']}/mysql_grants.sql"
 
 begin
   t = resources("template[#{grants_path}]")
@@ -129,3 +197,9 @@ execute "mysql-install-privileges" do
   action :nothing
   subscribes :run, resources("template[#{grants_path}]"), :immediately
 end
+
+file "#{node['mysql']['mysqld']['conf_dir']}/#{grants_path}" do
+  action :delete
+  backup 0
+end
+

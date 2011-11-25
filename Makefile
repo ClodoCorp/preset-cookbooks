@@ -6,7 +6,7 @@ clean:
 
 archive: chef-solo.tar.gz
 
-upload: chef-solo.tar.gz
+upload: archive
 #	scp chef-solo.tar.gz cc.kh.clodo.ru:/var/share/tftp/vase-boot/presets/
 	scp chef-solo.tar.gz cc00.oversun.clodo.ru:/var/share/tftp/repos/presets/
 	rm chef-solo.tar.gz

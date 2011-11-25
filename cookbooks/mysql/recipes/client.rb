@@ -17,7 +17,7 @@
 # limitations under the License.
 #
 
-::Chef::Resource::Package.send(:include, Opscode::Mysql::Helpers)
+#::Chef::Resource::Package.send(:include, Opscode::Mysql::Helpers)
 
 package "mysql-client" do
   package_name value_for_platform(
@@ -27,25 +27,25 @@ package "mysql-client" do
   action :install
 end
 
-package "mysql-devel" do
-  package_name begin
-    if platform?(%w{ centos redhat suse fedora })
-      "mysql-devel"
-    elsif debian_before_squeeze? || ubuntu_before_lucid?
-      "libmysqlclient15-dev"
-    else
-      "libmysqlclient-dev"
-    end
-  end
-  action :install
-end
+#package "mysql-devel" do
+#  package_name begin
+#    if platform?(%w{ centos redhat suse fedora })
+#      "mysql-devel"
+#    elsif debian_before_squeeze? || ubuntu_before_lucid?
+#      "libmysqlclient15-dev"
+#    else
+#      "libmysqlclient-dev"
+#    end
+#  end
+#  action :install
+#end
 
-if platform?(%w{ redhat centos fedora suse })
-  package 'ruby-mysql'
-elsif platform?(%w{ debian ubuntu })
-  package "libmysql-ruby"
-else
-  gem_package "mysql" do
-    action :install
-  end
-end
+#if platform?(%w{ redhat centos fedora suse })
+#  package 'ruby-mysql'
+#elsif platform?(%w{ debian ubuntu })
+#  package "libmysql-ruby"
+#else
+#  gem_package "mysql" do
+#    action :install
+#  end
+#end
