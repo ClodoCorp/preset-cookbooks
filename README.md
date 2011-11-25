@@ -6,7 +6,7 @@ Usage
 =====
 
 Sample usage:
-chef-solo --json-attributes "http://cc.oversun.clodo.ru/presets/lamp.json"  --recipe-url "http://cc.oversun.clodo.ru/presets/chef-solo.tar.gz"
+`chef-solo --json-attributes "http://cc.oversun.clodo.ru/presets/lamp.json"  --recipe-url "http://cc.oversun.clodo.ru/presets/chef-solo.tar.gz"`
 
 Overview
 ========
