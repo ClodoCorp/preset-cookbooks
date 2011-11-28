@@ -1,0 +1,9 @@
+{
+   "nginx": {
+    "sites": [ "mirror.clodo.ru" ],
+    "confs": [ "mirror" ]
+  },
+  "run_list": [
+         "recipe[nginx]"
+    ]
+}
