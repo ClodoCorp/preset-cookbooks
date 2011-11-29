@@ -1,0 +1,10 @@
+{
+  "server_name": "21-10262.clodo.ru",
+  "run_list": [
+         "recipe[mysql::server]",
+	 "recipe[php]",
+         "recipe[php::module_mysql]",
+         "recipe[wordpress]",
+	 "recipe[wordpress::apache_app]"
+    ]
+}

@@ -18,7 +18,7 @@
 #
 
 define :apache_module, :enable => true, :conf => false do
-  include_recipe "apache2"
+  include_recipe "apache"
 
   params[:filename] = params[:filename] || "mod_#{params[:name]}.so"
 

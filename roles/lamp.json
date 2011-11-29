@@ -1,9 +1,9 @@
 {
   "run_list": [
-         "recipe[apache2]",
+         "recipe[apache]",
          "recipe[mysql::server]",
          "recipe[php]",
          "recipe[php::module_mysql]",
-         "recipe[apache2::mod_php5]"
+         "recipe[apache::mod_php5]"
     ]
 }

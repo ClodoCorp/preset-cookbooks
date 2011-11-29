@@ -1,21 +1,21 @@
+ARCHIVES="recipes.tgz"
 
 .PHONY: roles archive clean upload
 
-chef-solo.tar.gz:
-	tar zcf chef-solo.tar.gz ./cookbooks ./roles
+all: upload clean
 
 clean:
-	rm -f chef-solo.tar.gz
+	rm -f $(ARCHIVES)
 
-archive: chef-solo.tar.gz
+archive:
+	tar zcf $(ARCHIVES) ./cookbooks ./roles
 
 roles:
 	scp roles/*.json cc00.oversun.clodo.ru:/var/share/tftp/repos/presets/
 
 upload: roles archive
 #	scp chef-solo.tar.gz cc.kh.clodo.ru:/var/share/tftp/vase-boot/presets/
-	scp chef-solo.tar.gz cc00.oversun.clodo.ru:/var/share/tftp/repos/presets/
-	rm chef-solo.tar.gz
+	scp $(ARCHIVES) cc00.oversun.clodo.ru:/var/share/tftp/repos/presets/
 
 upload_cookbooks:
 	cd cookbooks && knife cookbook upload -a -o .

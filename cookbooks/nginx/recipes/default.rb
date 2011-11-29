@@ -28,11 +28,26 @@ service "nginx" do
   action [ :enable, :start ]
 end
 
+node[:nginx][:dirs].each do |dir|
+  directory "#{dir}" do
+    mode 0755
+    owner node[:nginx][:user]
+    recursive true
+    action :create
+  end
+end
+
+
 node[:nginx][:sites].each do |site|
   nginx_site "#{site}" do
     action "create"
     enable true
   end
+end
+
+nginx_site "default" do
+  action "delete"
+  disable true
 end
 
 node[:nginx][:confs].each do |conf|

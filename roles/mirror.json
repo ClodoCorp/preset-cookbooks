@@ -1,9 +1,14 @@
 {
-   "nginx": {
+  "nginx": {
     "sites": [ "mirror.clodo.ru" ],
-    "confs": [ "mirror" ]
+    "confs": [ "mirror" ],
+    "dirs": [ "/var/www/temp", "/var/www/mirror" ]
+  },
+  "cron": {
+    "daily": [ "mirror_clean" ]
   },
   "run_list": [
-         "recipe[nginx]"
-    ]
+         "recipe[nginx]",
+	 "recipe[cron]"
+  ]
 }
