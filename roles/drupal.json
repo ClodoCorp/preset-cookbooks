@@ -1,0 +1,18 @@
+{
+  "web_app": {
+    "id": "",
+    "login": "test",
+    "password": "test",
+    "email": "presets@clodo.ru",
+    "domain": "21-10262.clodo.ru"
+  },
+  "server_name": "21-10262.clodo.ru",
+  "run_list": [
+         "recipe[mysql::server]",
+	 "recipe[php]",
+         "recipe[php::module_mysql]",
+         "recipe[drupal]",
+	 "recipe[drupal::apache_app]",
+	 "recipe[drupal::setup]"
+    ]
+}

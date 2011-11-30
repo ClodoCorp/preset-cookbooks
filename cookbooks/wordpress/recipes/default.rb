@@ -63,10 +63,10 @@ execute "create #{node['wordpress']['db']['database']} database" do
   command "/usr/bin/mysqladmin -u root -p#{node['mysql']['server_root_password']} create #{node['wordpress']['db']['database']}"
 end
 
-execute "http://#{server_fqdn}/wp-admin/install.php" do
-  command "echo http://#{server_fqdn}/wp-admin/install.php"
-  action :nothing
-end
+#execute "http://#{server_fqdn}/wp-admin/install.php" do
+#  command "echo http://#{server_fqdn}/wp-admin/install.php"
+#  action :nothing
+#end
 
 
 template "#{node['wordpress']['dir']}/wp-config.php" do
@@ -84,6 +84,6 @@ template "#{node['wordpress']['dir']}/wp-config.php" do
     :nonce_key       => node['wordpress']['keys']['nonce']
   )
 #  notifies :runwrite, "execute[http://#{server_fqdn}/wp-admin/install.php]"
-  notifies :run, resources(:execute => "http://#{server_fqdn}/wp-admin/install.php")
+#  notifies :run, resources(:execute => "http://#{server_fqdn}/wp-admin/install.php")
 end
 
