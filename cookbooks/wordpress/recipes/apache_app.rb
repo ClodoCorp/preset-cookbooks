@@ -1,5 +1,6 @@
 
 include_recipe "apache"
+include_recipe "apache::mod_php5"
 
 apache_site "000-default" do
   enable false

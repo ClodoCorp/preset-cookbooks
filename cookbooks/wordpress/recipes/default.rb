@@ -3,9 +3,11 @@ include_recipe "apache"
 include_recipe "mysql::server"
 include_recipe "php"
 include_recipe "php::module_mysql"
-include_recipe "apache::mod_php5"
+include_recipe "php::module_curl"
 
 server_fqdn = node[:server_name]
+
+node.set['wordpress']['www']['password'] = "test"
 
 node.set['wordpress']['db']['password'] = "test"
 node.set['wordpress']['keys']['auth'] = "test"
