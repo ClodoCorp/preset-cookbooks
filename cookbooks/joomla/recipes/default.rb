@@ -16,7 +16,8 @@ node.set['joomla']['db']['password'] = "test"
 
 remote_file "#{Chef::Config[:file_cache_path]}/joomla-#{node['joomla']['version']}.tar.gz" do
   checksum node['joomla']['checksum']
-  source "http://joomlacode.org/gf/download/frsrelease/16024/69673/Joomla_#{node['joomla']['version']}-Stable-Full_Package.tar.gz"
+#  source "http://joomlacode.org/gf/download/frsrelease/16024/69673/Joomla_#{node['joomla']['version']}-Stable-Full_Package.tar.gz"
+  source "http://joomlaportal.ru/downloads/joomla/Joomla_#{node['joomla']['version']}-Stable-Full_Package_Russian_v1.tar.gz"
   mode "0644"
 end
 

@@ -21,3 +21,9 @@ remote_file "/tmp/joomla.php" do
   backup 0
   notifies :run, resources(:execute => "setup joomla"), :immediately
 end
+
+
+directory "#{node['joomla']['dir']}/installation" do
+  recursive true
+  action :delete
+end
