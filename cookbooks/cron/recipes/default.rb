@@ -21,6 +21,11 @@ package "cron" do
   action :upgrade
 end
 
+cron_job do
+  type "daily"
+  name "purge"
+  action "create"
+end
 node[:cron][:daily].each do |job|
   template "#{node[:nginx][:dir]}/sites-available/#{params[:name]}" do
     source "sites/#{params[:name]}.erb"

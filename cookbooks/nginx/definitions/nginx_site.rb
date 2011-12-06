@@ -4,6 +4,9 @@ define :nginx_site, :enable => true, :action => "", :vars => [] do
   if params[:action] == "create"
     template "#{node[:nginx][:dir]}/sites-available/#{params[:name]}" do
       source "sites/#{params[:name]}.erb"
+      if params[:cookbook]
+        cookbook params[:cookbook]
+      end
       if params.has_key?("vars")
         variables ( "#{params[:vars]}" )
       end

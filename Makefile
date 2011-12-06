@@ -1,21 +1,21 @@
 ARCHIVES="recipes.tgz"
-SCP=scp -C -B -q
+SCP=rsync -az -e ssh
 .PHONY: roles archive clean upload
-
 all: upload clean
 
 clean:
 	rm -f $(ARCHIVES)
+	rm -rf tmpdir
+
 
 archive:
-	tar zcf $(ARCHIVES) ./cookbooks ./roles
+	mkdir -p tmpdir/
+	tar zcf tmpdir/$(ARCHIVES) ./cookbooks ./roles
+	cp roles/*.json tmpdir/
 
-roles:
-	$(SCP) roles/*.json cc00.oversun.clodo.ru:/var/share/tftp/repos/presets/
-
-upload: roles archive
+upload: archive
 #	scp chef-solo.tar.gz cc.kh.clodo.ru:/var/share/tftp/vase-boot/presets/
-	$(SCP) $(ARCHIVES) cc00.oversun.clodo.ru:/var/share/tftp/repos/presets/
+	$(SCP) tmpdir/* cc00.oversun.clodo.ru:/var/share/tftp/repos/presets/
 
 upload_cookbooks:
 	cd cookbooks && knife cookbook upload -a -o .

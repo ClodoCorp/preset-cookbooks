@@ -1,0 +1,16 @@
+{
+  "web_app": {
+    "system": {
+      "title: "ISPmanager"
+    },
+    "ui": {
+      "adm_login": "Логин администратора",
+      "adm_pass": "Пароль администратора",
+      "adm_email": "Почта администратора",
+      "domain" : "Домен"
+    },
+  },
+  "run_list": [
+         "recipe[ispmanager]"
+  ]
+}

@@ -1,6 +1,6 @@
 
 define :apache_site, :enable => true do
-  include_recipe "apache"
+  include_recipe "apache2"
 
   if params[:enable]
     execute "a2ensite #{params[:name]}" do

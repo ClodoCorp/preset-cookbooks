@@ -1,22 +1,3 @@
-#
-# Author::  Seth Chisamore (<schisamo@opscode.com>)
-# Cookbook Name:: php
-# Recipe:: package
-#
-# Copyright 2011, Opscode, Inc.
-#
-# Licensed under the Apache License, Version 2.0 (the "License");
-# you may not use this file except in compliance with the License.
-# You may obtain a copy of the License at
-#
-#     http://www.apache.org/licenses/LICENSE-2.0
-#
-# Unless required by applicable law or agreed to in writing, software
-# distributed under the License is distributed on an "AS IS" BASIS,
-# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
-# See the License for the specific language governing permissions and
-# limitations under the License.
-#
 
 pkgs = value_for_platform(
   [ "centos", "redhat", "fedora" ] => {
@@ -40,3 +21,28 @@ template "#{node['php']['conf_dir']}/php.ini" do
   group "root"
   mode "0644"
 end
+
+service "php-fpm" do
+  pattern "php-fpm"
+  start_command "/usr/sbin/invoke-rc.d php5-fpm start && sleep 1"
+  stop_command "/usr/sbin/invoke-rc.d php5-fpm stop && sleep 1"
+  restart_command "/usr/sbin/invoke-rc.d php5-fpm restart && sleep 1"
+  reload_command "/usr/sbin/invoke-rc.d php5-fpm reload && sleep 1"
+  supports value_for_platform(
+    "default" => { "default" => [:restart, :reload ] }
+  )
+  action :nothing
+end
+
+service "php5-fpm" do
+  pattern "php-fpm"
+  start_command "/usr/sbin/invoke-rc.d php5-fpm start && sleep 1"
+  stop_command "/usr/sbin/invoke-rc.d php5-fpm stop && sleep 1"
+  restart_command "/usr/sbin/invoke-rc.d php5-fpm restart && sleep 1"
+  reload_command "/usr/sbin/invoke-rc.d php5-fpm reload && sleep 1"
+  supports value_for_platform(
+    "default" => { "default" => [:restart, :reload ] }
+  )
+  action :nothing
+end
+

@@ -1,5 +1,4 @@
 
-include_recipe "apache"
 include_recipe "mysql::server"
 include_recipe "php"
 include_recipe "php::module_mysql"
@@ -63,12 +62,6 @@ execute "create #{node['wordpress']['db']['database']} database" do
   command "/usr/bin/mysqladmin -u root -p#{node['mysql']['server_root_password']} create #{node['wordpress']['db']['database']}"
 end
 
-#execute "http://#{server_fqdn}/wp-admin/install.php" do
-#  command "echo http://#{server_fqdn}/wp-admin/install.php"
-#  action :nothing
-#end
-
-
 template "#{node['wordpress']['dir']}/wp-config.php" do
   source "wp-config.php.erb"
   owner "root"
@@ -83,7 +76,5 @@ template "#{node['wordpress']['dir']}/wp-config.php" do
     :logged_in_key   => node['wordpress']['keys']['logged_in'],
     :nonce_key       => node['wordpress']['keys']['nonce']
   )
-#  notifies :runwrite, "execute[http://#{server_fqdn}/wp-admin/install.php]"
-#  notifies :run, resources(:execute => "http://#{server_fqdn}/wp-admin/install.php")
 end
 

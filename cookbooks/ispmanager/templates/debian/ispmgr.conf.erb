@@ -1,0 +1,48 @@
+Option FirstStart
+Option NoMysqlQuota
+
+Preset "Example package" {
+        Owner root
+        Disk 500
+        Mail 100
+        Ftp 10
+        Domain 5
+        WebDomain 2
+        MailDomain 10
+        DataBase 10
+        DataBaseUser 2
+        Bandwidth 100000
+        CGI on
+        PHP mod cgi
+        SSI on
+        FRP off
+        SSL off
+        Shell off
+        MySQLQuery 0
+        MySQLUpdate 0
+        MySQLConn 0
+        IpLimit 0
+}
+
+extaction mindterm /mancgi/mindterm
+ip <%= @ip %> shared _
+PluginSource http://ru.download.ispsystem.com/plugins/ispmgr_plugins.xml
+PluginSource http://usings.ru/isp_plugins/ispmgr_plugins.xml
+path db4  /usr/bin/db4.6_dump -p /etc/sasldb2
+ApacheVersion  2
+path DefaultHomeDir  /var/www
+path httpd.conf  /etc/apache2/apache2.conf
+path apachectl  /usr/sbin/apache2ctl start
+path httpd  /usr/sbin/apache2
+Service "HTTP" {
+        Process apache2
+        Start /etc/init.d/apache2 start
+        Stop /etc/init.d/apache2 stop
+        ConfName apache2
+        Type www
+        Monitored NO
+}
+ApacheProcName  apache2
+ApacheUid  33
+ApacheGid  33
+

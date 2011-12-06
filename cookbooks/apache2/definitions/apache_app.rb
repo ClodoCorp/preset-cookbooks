@@ -3,10 +3,10 @@ define :apache_app, :template => "apache_app.conf.erb", :enable => true do
   
   application_name = params[:name]
 
-  include_recipe "apache"
-  include_recipe "apache::mod_rewrite"
-  include_recipe "apache::mod_deflate"
-  include_recipe "apache::mod_headers"
+  include_recipe "apache2"
+  include_recipe "apache2::mod_rewrite"
+  include_recipe "apache2::mod_deflate"
+  include_recipe "apache2::mod_headers"
   
   template "#{node[:apache][:dir]}/sites-available/#{application_name}.conf" do
     source params[:template]

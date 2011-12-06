@@ -8,7 +8,6 @@
     "daily": [ "mirror_clean" ]
   },
   "run_list": [
-         "recipe[nginx]",
-	 "recipe[cron]"
+         "recipe[mirror]"
   ]
 }

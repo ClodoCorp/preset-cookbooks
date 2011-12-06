@@ -28,20 +28,23 @@ service "nginx" do
   action [ :enable, :start ]
 end
 
-node[:nginx][:dirs].each do |dir|
-  directory "#{dir}" do
-    mode 0755
-    owner node[:nginx][:user]
-    recursive true
-    action :create
+if node[:nginx][:dirs].is_a?(Hash)
+  node[:nginx][:dirs].each do |dir|
+    directory "#{dir}" do
+      mode 0755
+      owner node[:nginx][:user]
+      recursive true
+      action :create
+    end
   end
 end
 
-
-node[:nginx][:sites].each do |site|
-  nginx_site "#{site}" do
-    action "create"
-    enable true
+if node[:nginx][:sites].is_a?(Hash)
+  node[:nginx][:sites].each do |site|
+    nginx_site "#{site}" do
+      action "create"
+      enable true
+    end
   end
 end
 
@@ -50,7 +53,9 @@ nginx_site "default" do
   disable true
 end
 
-node[:nginx][:confs].each do |conf|
-  nginx_conf "#{conf}"
+if node[:nginx][:confs].is_a?(Hash)
+  node[:nginx][:confs].each do |conf|
+    nginx_conf "#{conf}"
+  end
 end
 

@@ -1,15 +1,15 @@
 {
   "web_app": {
-    "id": "",
-    "login": "test",
-    "password": "test",
-    "email": "presets@clodo.ru",
-    "domain": "21-10262.clodo.ru",
-    "database": "mysql",
-    "backend": "apache2",
-    "frontend": "apache2"
+    "system": {
+      "title: "Wordpress"
+    },
+    "ui": {
+      "adm_login": "Логин администратора",
+      "adm_pass": "Пароль администратора",
+      "adm_email": "Почта администратора",
+      "domain" : "Домен"
+    },
   },
-  "server_name": "21-10262.clodo.ru",
   "run_list": [
          "recipe[mysql::server]",
 	 "recipe[php]",
