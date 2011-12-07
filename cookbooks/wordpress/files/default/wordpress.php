@@ -1,29 +1,37 @@
 #!/usr/bin/php
 <?php
 
-$ARG_DEBUG = true;
 
-$ARG_TITLE = "clodo wordpress preset";
+$ARG_DEBUG = false;
 
-$ARG_NAME = "admin";
-if (isset($argv[1])) $ARG_NAME = $argv[1];
+$ARGS=array();
+$ARGS['title'] = "clodo wordpress preset";
+$ARGS['login'] = "admin";
+$ARGS['pass'] = "admin";
+$ARGS['email'] = "presets@clodo.ru";
+$ARGS['domain'] = "http://".gethostbyaddr('127.0.0.1').".clodo.ru";
+$ARGS['db_name'] = "wordpress";
+$ARGS['db_login'] = "wordpress";
+$ARGS['db_pass'] = "wordpress";
+$ARGS['db_port'] = "";
+$ARGS['db_pref'] = "";
+$ARGS['db_host'] = "localhost";
+$ARGS['db_type'] = "mysqli";
 
-$ARG_PASS = "adminadmin";
-if (isset($argv[2])) $ARG_PASS = $argv[2];
+foreach ($argv as $arg) {
+  $parts = explode("=", $arg);
+  if (is_array($parts) && isset($parts[0]) && isset($parts[1]) && $parts[1] != NULL && $parts[0] != NULL && preg_match('/администратора/', $parts[1]) == 0) $ARGS[$parts[0]] = $parts[1];
+}
 
-$ARG_EMAIL = "admin@clodo.ru";
-if (isset($argv[3])) $ARG_EMAIL = $argv[3];
+var_dump($ARGS);
 
-$ARG_URL = "http://".gethostbyaddr('127.0.0.1').".clodo.ru";
-if (isset($argv[4])) $ARG_URL = $argv[4];
 
 $ARG_COOKIE = "cookie.txt";
-if (isset($argv[5])) $ARG_COOKIE = $argv[5];
 
 $DATA = array(
-	'weblog_title' => $ARG_TITLE, 'user_name' => $ARG_NAME,
-	'admin_password' => $ARG_PASS, 'admin_password2' => $ARG_PASS,
-	'admin_email' => $ARG_EMAIL, 'blog_public' => 1, 'Submit' => 'Install WordPress');
+	'weblog_title' => $ARGS['title'], 'user_name' => $ARGS['login'],
+	'admin_password' => $ARGS['pass'], 'admin_password2' => $ARGS['pass'],
+	'admin_email' => $ARGS['email'], 'blog_public' => 1, 'Submit' => 'Install WordPress');
 
 foreach($DATA as $KEY => $VALUE) {
   $POST_DATA[] = $KEY."=".urlencode($VALUE);

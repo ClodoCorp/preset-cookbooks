@@ -1,4 +1,16 @@
 {
+  "web_app": {
+    "system": {
+      "name": "LAMP",
+      "version": "",
+      "downloads": "",
+      "dir": "/var/www/",
+      "pass": ""
+    },
+    "ui": {
+      "domain" : "Домен"
+    }
+  },
   "run_list": [
          "recipe[apache2]",
          "recipe[mysql::server]",

@@ -1,4 +1,16 @@
 {
+  "web_app": {
+    "system": {
+      "name": "mirror",
+      "version": "",
+      "downloads": "",
+      "dir": "/var/www/mirror",
+      "pass": ""
+    },
+    "ui": {
+      "domain" : "домен"
+    }
+  },
   "nginx": {
     "sites": [ "mirror.clodo.ru" ],
     "confs": [ "mirror" ],

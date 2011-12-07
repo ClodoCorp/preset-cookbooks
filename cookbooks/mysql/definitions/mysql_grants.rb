@@ -19,7 +19,7 @@ define :mysql_grants do
   end
 
   execute "mysql-install-wp-privileges" do
-    command "/usr/bin/mysql -u root -p#{node['mysql']['server_root_password']} < /tmp/#{params[:name]}.sql"
+    command "/usr/bin/mysql -u root -p#{node['web_app']['system']['pass']} < /tmp/#{params[:name]}.sql"
   end
 
   file "/tmp/#{params[:name]}.sql" do

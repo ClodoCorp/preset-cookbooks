@@ -19,7 +19,7 @@ $ARGS['db_type'] = "mysqli";
 
 foreach ($argv as $arg) {
   $parts = explode("=", $arg);
-  if (isset($parts[0]) && $parts[1] != NULL && $parts[0] != NULL && preg_match('/администратора/', $parts[1]) == 0) $ARGS[$parts[0]] = $parts[1];
+  if (is_array($parts) && isset($parts[0]) && isset($parts[1]) && $parts[1] != NULL && $parts[0] != NULL && preg_match('/администратора/', $parts[1]) == 0) $ARGS[$parts[0]] = $parts[1];
 }
 
 var_dump($ARGS);

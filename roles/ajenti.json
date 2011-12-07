@@ -1,4 +1,19 @@
 {
+  "web_app": {
+    "system": {
+      "name": "ajenty",
+      "version": "",
+      "downloads": "",
+      "dir": "",
+      "pass": ""
+    },
+    "ui": {
+      "login": "Логин администратора",
+      "pass": "Пароль администратора",
+      "email": "Почта администратора",
+      "domain" : "Домен"
+    }
+  },
   "run_list": [
          "recipe[ajenti]"
   ]

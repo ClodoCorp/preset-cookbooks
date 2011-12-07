@@ -1,4 +1,21 @@
 {
+  "web_app": {
+    "system": {
+      "name": "bitrix",
+      "version": "",
+      "downloads": "",
+      "dir": "/home/bitrix",
+      "pass": ""
+    },
+    "ui": {
+      "login": "Логин администратора",
+      "pass": "Пароль администратора",
+      "email": "Почта администратора",
+      "domain" : "Домен",
+      "title" : "Название сайта",
+      "license": "Лицензия"
+    }
+  },
   "run_list": [
          "recipe[bitrix]"
   ]

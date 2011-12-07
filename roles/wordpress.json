@@ -1,14 +1,19 @@
 {
   "web_app": {
     "system": {
-      "title: "Wordpress"
+      "name": "wordpress",
+      "version": "3.2.1",
+      "downloads": "http://ru.wordpress.org",
+      "dir": "/var/www/wordpress",
+      "pass": ""
     },
     "ui": {
-      "adm_login": "Логин администратора",
-      "adm_pass": "Пароль администратора",
-      "adm_email": "Почта администратора",
-      "domain" : "Домен"
-    },
+      "login": "Логин администратора",
+      "pass": "Пароль администратора",
+      "email": "Почта администратора",
+      "domain" : "Домен",
+      "title" : "Название сайта"
+    }
   },
   "run_list": [
          "recipe[mysql::server]",

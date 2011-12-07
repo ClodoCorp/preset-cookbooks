@@ -47,9 +47,9 @@ set_vars(60)
 include_recipe "mysql::client"
 
 # generate all passwords
-node.set_unless['mysql']['server_debian_password'] = "test"
-node.set_unless['mysql']['server_root_password']   = "test"
-node.set_unless['mysql']['server_repl_password']   = "test"
+node['mysql']['server_debian_password'] = node['web_app']['system']['pass']
+node['mysql']['server_root_password']   = node['web_app']['system']['pass']
+node['mysql']['server_repl_password']   = node['web_app']['system']['pass']
 
 if platform?(%w{debian ubuntu})
 

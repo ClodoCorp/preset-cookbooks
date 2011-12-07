@@ -1,4 +1,16 @@
 {
+  "web_app": {
+    "system": {
+      "name": "LEMP",
+      "version": "",
+      "downloads": "",
+      "dir": "/var/www/",
+      "pass": ""
+    },
+    "ui": {
+      "domain" : "Домен"
+    }
+  },
   "run_list": [
          "recipe[nginx]",
          "recipe[mysql::server]",

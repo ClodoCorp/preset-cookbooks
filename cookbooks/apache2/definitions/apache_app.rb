@@ -21,9 +21,9 @@ define :apache_app, :template => "apache_app.conf.erb", :enable => true do
       :application_name => application_name,
       :params => params
     )
-    if ::File.exists?("#{node[:apache][:dir]}/sites-enabled/#{application_name}.conf")
-      notifies :reload, resources(:service => "apache2"), :delayed
-    end
+#    if ::File.exists?("#{node[:apache][:dir]}/sites-enabled/#{application_name}.conf")
+#      notifies :restart, resources(:service => "apache2"), :immediately
+#    end
   end
   
   apache_site "#{params[:name]}.conf" do

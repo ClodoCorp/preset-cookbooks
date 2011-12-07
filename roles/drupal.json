@@ -4,6 +4,7 @@
       "name": "drupal",
       "version": "6.22",
       "downloads": "http://ftp.drupal.org",
+      "platforms": [ "debian", "ubuntu", "centos" ],
       "dir": "/var/www/drupal",
       "pass": ""
     },

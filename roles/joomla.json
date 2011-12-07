@@ -1,14 +1,19 @@
 {
   "web_app": {
     "system": {
-      "title: "Wordpress"
+      "name": "joomla",
+      "version": "",
+      "downloads": "",
+      "dir": "/var/www/joomla",
+      "pass": ""
     },
     "ui": {
-      "adm_login": "Логин администратора",
-      "adm_pass": "Пароль администратора",
-      "adm_email": "Почта администратора",
-      "domain" : "Домен"
-    },
+      "login": "Логин администратора",
+      "pass": "Пароль администратора",
+      "email": "Почта администратора",
+      "domain" : "Домен",
+      "title" : "Название сайта"
+    }
   },
   "run_list": [
          "recipe[mysql::server]",
