@@ -147,7 +147,7 @@ template "#{node['mysql']['mysqld']['confd_dir']}/preset.cnf" do
                            :myisamchk_key_buffer_size => node['mysql']['myisamchk']['key_buffer_size'],
                            :myisamchk_sort_buffer_size => node['mysql']['myisamchk']['sort_buffer_size'],
                            :myisamchk_read_buffer => node['mysql']['myisamchk']['read_buffer'],
-                           :myisamchk_write_buffer => node['mysql']['myisamchk']['write_buffer'] )
+                           :myisamchk_write_buffer => node['mysql']['myisamchk']['write_buffer'])
 end
 
 package "mysql-server" do

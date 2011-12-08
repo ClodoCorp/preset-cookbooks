@@ -2,7 +2,7 @@
 include_recipe "drupal"
 
 execute "setup drupal" do
-  command "php /tmp/drupal.php 'login=#{node['web_app']['ui']['login']}' 'pass=#{node['web_app']['ui']['pass']}' 'email=#{node['web_app']['ui']['email']}' 'domain=#{node['hostname']}.clodo.ru' 'title=#{node['web_app']['ui']['title']}' 'db_name=drupal' 'db_host=localhost' 'db_login=drupal' 'db_pass=#{node['web_app']['system']['pass']}'"
+  command "php /tmp/drupal.php 'login=#{node['web_app']['ui']['login']}' 'pass=#{node['web_app']['ui']['pass']}' 'email=#{node['web_app']['ui']['email']}' 'domain=#{node['hostname']}.clodo.ru' 'title=#{node['web_app']['ui']['title']}' 'db_name=#{node['web_app']['system']['name']}' 'db_host=localhost' 'db_login=#{node['web_app']['system']['name']}' 'db_pass=#{node['web_app']['system']['pass']}'"
   action :nothing
 end
 

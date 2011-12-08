@@ -181,7 +181,7 @@ template "#{node[:apache][:dir]}/ports.conf" do
   source "ports.conf.erb"
   owner "root"
   group "root"
-  variables ( :apache_listen_ports => node[:apache][:listen_ports].map{|p| p.to_i}.uniq, :apache_listen_sslports => node[:apache][:listen_sslports].map{|p| p.to_i}.uniq )
+  variables (:apache_listen_ports => node[:apache][:listen_ports].map{|p| p.to_i}.uniq, :apache_listen_sslports => node[:apache][:listen_sslports].map{|p| p.to_i}.uniq)
   mode 0644
   notifies :restart, resources(:service => "apache2")
 end
