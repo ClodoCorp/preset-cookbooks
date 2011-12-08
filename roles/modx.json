@@ -1,0 +1,26 @@
+{
+  "web_app": {
+    "system": {
+      "name": "modx",
+      "version": "",
+      "downloads": "",
+      "dir": "/var/www/modx",
+      "pass": ""
+    },
+    "ui": {
+      "login": "Логин администратора",
+      "pass": "Пароль администратора",
+      "email": "Почта администратора",
+      "domain" : "Домен",
+      "title" : "Название сайта"
+    }
+  },
+  "run_list": [
+         "recipe[mysql::server]",
+	 "recipe[php]",
+         "recipe[php::module_mysql]",
+         "recipe[modx]",
+	 "recipe[modx::apache_app]",
+	 "recipe[modx::setup]"
+    ]
+}

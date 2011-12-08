@@ -725,7 +725,7 @@ auto_globals_jit = On
 
 ; Maximum size of POST data that PHP will accept.
 ; http://php.net/post-max-size
-post_max_size = 8M
+post_max_size = 64M
 
 ; Magic quotes are a preprocessing feature of PHP where PHP will attempt to
 ; escape any character sequences in GET, POST, COOKIE and ENV data which might
@@ -876,7 +876,7 @@ file_uploads = On
 
 ; Maximum allowed size for uploaded files.
 ; http://php.net/upload-max-filesize
-upload_max_filesize = 2M
+upload_max_filesize = 64M
 
 ; Maximum number of files that can be uploaded via a single request
 max_file_uploads = 20
@@ -946,7 +946,7 @@ default_socket_timeout = 60
 [Date]
 ; Defines the default timezone used by the date functions
 ; http://php.net/date.timezone
-;date.timezone =
+date.timezone = Europe/Moscow
 
 ; http://php.net/date.default-latitude
 ;date.default_latitude = 31.7667
