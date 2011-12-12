@@ -1,5 +1,5 @@
 
-package "unicorn"
+package "unicorn-http"
 
 %w{ucensite ucdissite}.each do |ucscript|
   template "/usr/sbin/#{ucscript}" do
@@ -10,11 +10,19 @@ package "unicorn"
   end
 end
 
-service "unicorn" do
-  start_command "/usr/sbin/invoke-rc.d unicorn start && sleep 1"
-  stop_command "/usr/sbin/invoke-rc.d unicorn stop && sleep 1"
-  restart_command "/usr/sbin/invoke-rc.d unicorn restart && sleep 1"
-  reload_command "/usr/sbin/invoke-rc.d unicorn reload && sleep 1"
+
+unicorn_app "default" do
+  template "default.conf.erb"
+  rails_root "/var/www/default"
+  rails_env "production"
+end
+
+
+service "unicorn-http" do
+  start_command "/usr/sbin/invoke-rc.d unicorn-http start && sleep 1"
+  stop_command "/usr/sbin/invoke-rc.d unicorn-http stop && sleep 1"
+  restart_command "/usr/sbin/invoke-rc.d unicorn-http restart && sleep 1"
+  reload_command "/usr/sbin/invoke-rc.d unicorn-http reload && sleep 1"
   supports value_for_platform(
     "default" => { "default" => [:restart, :reload ] }
   )
@@ -28,11 +36,11 @@ end
     mode 0755
     owner "root"
     group "root"
-    notifies :reload, resources(:service => "unicorn"), :immediately
+    notifies :reload, resources(:service => "unicorn-http"), :immediately
   end
 end
 
-service "unicorn" do
+service "unicorn-http" do
   action :enable
 end
 
