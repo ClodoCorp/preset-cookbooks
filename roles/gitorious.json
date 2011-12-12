@@ -1,0 +1,21 @@
+{
+  "web_app": {
+    "system": {
+      "name": "Gitorious",
+      "version": "",
+      "downloads": "",
+      "dir": "/var/www/",
+      "pass": ""
+    },
+    "ui": {
+      "domain" : "Домен"
+    }
+  },
+  "run_list": [
+         "recipe[nginx]",
+         "recipe[mysql::server]",
+         "recipe[unicorn]",
+         "recipe[activemq]",
+         "recipe[gitorious]"
+    ]
+}
