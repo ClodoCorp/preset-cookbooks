@@ -14,6 +14,6 @@
   "run_list": [
          "recipe[nginx]",
          "recipe[mysql::server]",
-         "recipe[php::module_fpm]"
+         "recipe[unicorn]"
     ]
 }
