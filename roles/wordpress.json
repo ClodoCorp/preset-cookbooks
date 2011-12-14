@@ -2,7 +2,7 @@
   "web_app": {
     "system": {
       "name": "wordpress",
-      "version": "3.2.1",
+      "version": "3.3",
       "downloads": "http://ru.wordpress.org",
       "dir": "/var/www/wordpress",
       "pass": ""

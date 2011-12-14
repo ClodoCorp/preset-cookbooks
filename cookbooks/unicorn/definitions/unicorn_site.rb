@@ -2,6 +2,7 @@ define :unicorn_site, :enable => true do
   include_recipe "unicorn"
   include_recipe "nginx"
 
+
   if params[:enable]
     execute "ucensite #{params[:name]}" do
       command "/usr/sbin/ucensite #{params[:name]}"
@@ -14,6 +15,7 @@ define :unicorn_site, :enable => true do
     end
     nginx_site "#{params[:name]}" do
       action "create"
+      cookbook "unicorn"
       enable true
     end
   else

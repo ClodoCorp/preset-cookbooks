@@ -26,6 +26,7 @@ cron_job do
   name "purge"
   action "create"
 end
+
 node[:cron][:daily].each do |job|
   template "#{node[:nginx][:dir]}/sites-available/#{params[:name]}" do
     source "sites/#{params[:name]}.erb"

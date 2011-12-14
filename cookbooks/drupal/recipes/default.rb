@@ -1,5 +1,3 @@
-
-include_recipe "apache2"
 include_recipe "mysql::server"
 include_recipe "php"
 include_recipe "php::module_mysql"
@@ -19,7 +17,7 @@ directory "#{node['web_app']['system']['dir']}" do
   recursive true
 end
 
-execute "untar-drupal" do
+execute "unpack" do
   cwd "#{node['web_app']['system']['dir']}"
   command "tar --no-same-owner --strip-components 1 -xzvf #{Chef::Config[:file_cache_path]}/#{node['web_app']['system']['name']}-#{node['web_app']['system']['version']}.tar.gz"
   creates "#{node['web_app']['system']['dir']}/install.php"
@@ -37,7 +35,7 @@ file "#{node['web_app']['system']['dir']}/sites/default/settings.php" do
   provider Chef::Provider::File::Copy
 end
 
-execute "chown-drupal" do
+execute "owner" do
   command "chown -R www-data:www-data #{node['web_app']['system']['dir']}"
 end
 

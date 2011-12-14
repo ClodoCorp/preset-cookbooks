@@ -8,7 +8,6 @@ package "unzip"
 
 remote_file "#{Chef::Config[:file_cache_path]}/#{node['web_app']['system']['name']}-#{node['web_app']['system']['version']}.zip" do
   source "modx-2.1.5-pl.zip"
-#  source "#{node['web_app']['system']['downloads']}/#{node['web_app']['system']['name']}-#{node['web_app']['system']['version']}-ru_RU.tar.gz"
   mode "0644"
 end
 

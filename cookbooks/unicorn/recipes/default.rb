@@ -1,4 +1,4 @@
-
+package "rails"
 package "unicorn-http"
 
 %w{ucensite ucdissite}.each do |ucscript|
@@ -11,13 +11,6 @@ package "unicorn-http"
 end
 
 
-unicorn_app "default" do
-  template "default.conf.erb"
-  rails_root "/var/www/default"
-  rails_env "production"
-end
-
-
 service "unicorn-http" do
   start_command "/usr/sbin/invoke-rc.d unicorn-http start && sleep 1"
   stop_command "/usr/sbin/invoke-rc.d unicorn-http stop && sleep 1"
@@ -27,6 +20,12 @@ service "unicorn-http" do
     "default" => { "default" => [:restart, :reload ] }
   )
   action :nothing
+end
+
+unicorn_app "default" do
+  template "default.conf.erb"
+  rails_root "/var/www/default"
+  rails_env "production"
 end
 
 

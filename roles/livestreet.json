@@ -1,0 +1,26 @@
+{
+  "web_app": {
+    "system": {
+      "name": "livestreet",
+      "version": "0.5.1",
+      "downloads": "",
+      "dir": "/var/www/livestreet",
+      "pass": ""
+    },
+    "ui": {
+      "login": "Логин администратора",
+      "pass": "Пароль администратора",
+      "email": "Почта администратора",
+      "domain" : "Домен",
+      "title" : "Название сайта"
+    }
+  },
+  "run_list": [
+         "recipe[mysql::server]",
+	 "recipe[php]",
+         "recipe[php::module_mysql]",
+         "recipe[livestreet]",
+	 "recipe[livestreet::apache_app]",
+	 "recipe[livestreet::setup]"
+    ]
+}
