@@ -16,6 +16,7 @@
     }
   },
   "run_list": [
+         "recipe[apache2]",
          "recipe[mysql::server]",
 	 "recipe[php]",
          "recipe[php::module_mysql]",
