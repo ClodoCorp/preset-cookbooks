@@ -1,0 +1,28 @@
+{
+  "web_app": {
+    "system": {
+      "name": "acquia",
+      "version": "7.9.9.5716",
+      "downloads": "http://network.acquia.com",
+      "platforms": [ "debian", "ubuntu", "centos" ],
+      "dir": "/var/www/acquia",
+      "pass": ""
+    },
+    "ui": {
+      "login": "Логин администратора",
+      "pass": "Пароль администратора",
+      "email": "Почта администратора",
+      "domain" : "Домен",
+      "title" : "Название сайта"
+    }
+  },
+  "run_list": [
+         "recipe[apache2]",
+         "recipe[mysql::server]",
+	 "recipe[php]",
+         "recipe[php::module_mysql]",
+         "recipe[acquia]",
+	 "recipe[acquia::apache_app]",
+	 "recipe[acquia::setup]"
+    ]
+}

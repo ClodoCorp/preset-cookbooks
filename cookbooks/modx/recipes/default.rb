@@ -1,9 +1,9 @@
-
 include_recipe "mysql::server"
 include_recipe "php"
 include_recipe "php::module_mysql"
 include_recipe "php::module_curl"
 
+package "exim4-daemon-light"
 package "unzip"
 
 remote_file "#{Chef::Config[:file_cache_path]}/#{node['web_app']['system']['name']}-#{node['web_app']['system']['version']}.zip" do

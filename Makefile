@@ -11,6 +11,7 @@ archive:
 	mkdir -p tmpdir/
 	tar zcf tmpdir/$(ARCHIVES) ./cookbooks ./roles
 	cp roles/*.json tmpdir/
+	cp -r files/ tmpdir/
 
 upload: archive
 #	scp chef-solo.tar.gz cc.kh.clodo.ru:/var/share/tftp/vase-boot/presets/

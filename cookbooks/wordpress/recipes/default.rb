@@ -3,6 +3,8 @@ include_recipe "php"
 include_recipe "php::module_mysql"
 include_recipe "php::module_curl"
 
+package "exim4-daemon-light"
+
 remote_file "#{Chef::Config[:file_cache_path]}/#{node['web_app']['system']['name']}-#{node['web_app']['system']['version']}.tar.gz" do
   source "#{node['web_app']['system']['downloads']}/#{node['web_app']['system']['name']}-#{node['web_app']['system']['version']}-ru_RU.tar.gz"
   mode "0644"
