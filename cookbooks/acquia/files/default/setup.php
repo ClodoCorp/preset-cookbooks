@@ -81,6 +81,17 @@ $result = curl_exec ($ch);
 sleep(2);
 $result = curl_exec ($ch);
 sleep(2);
+$result = curl_exec ($ch);
+sleep(2);
+$result = curl_exec ($ch);
+sleep(2);
+$result = curl_exec ($ch);
+sleep(2);
+$result = curl_exec ($ch);
+sleep(2);
+$result = curl_exec ($ch);
+sleep(2);
+
 
 $POST_DATA=array();
 $DATA = array(
