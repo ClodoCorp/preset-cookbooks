@@ -21,5 +21,4 @@ end
 directory "#{node['web_app']['system']['dir']}/install" do
   action :delete
   recursive true
-  backup 0
 end
