@@ -7,13 +7,6 @@
       "dir": "/usr/local/ispmgr",
       "pass": ""
     },
-    "ui": {
-      "login": "Логин администратора",
-      "pass": "Пароль администратора",
-      "email": "Почта администратора",
-      "domain" : "Домен",
-      "license": "Лицензия"
-    }
   },
   "run_list": [
          "recipe[ispmanager]"

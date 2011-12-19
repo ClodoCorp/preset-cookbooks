@@ -1,29 +1,25 @@
-
 include_recipe "joomla"
-server_fqdn = node[:server_name]
 
-execute "setup joomla" do
-  command "php /tmp/joomla.php #{node['web_app']['login']} #{node['web_app']['password']} #{node['web_app']['email']} #{node['web_app']['domain']}"
+execute "setup" do
+  command "php /tmp/setup.php 'login=#{node['web_app']['ui']['login']}' 'pass=#{node['web_app']['ui']['pass']}' 'email=#{node['web_app']['ui']['email']}' 'domain=#{node['hostname']}.clodo.ru' 'title=#{node['web_app']['ui']['title']}' 'db_name=#{node['web_app']['system']['name']}' 'db_host=localhost' 'db_login=#{node['web_app']['system']['name']}' 'db_pass=#{node['web_app']['system']['pass']}'"
   action :nothing
 end
 
-#cookbook_file "wordpress.php" do
-#  path "/tmp/wordpress.php"
-#  mode "0600"
-#  backup 0
-#  notifies :write, resources(:execute => "setup wordpress")
-#end
-
-remote_file "/tmp/joomla.php" do
-  source "joomla.php"
-  cookbook "joomla"
-  mode "0600"
+remote_file "/tmp/setup.php" do
+  source "setup.php"
+  cookbook "#{node['web_app']['system']['name']}"
+  mode 0600
   backup 0
-  notifies :run, resources(:execute => "setup joomla"), :immediately
+  notifies :run, resources(:execute => "setup"), :immediately
 end
 
+file "/tmp/setup.php" do
+  action :delete
+  backup 0
+end
 
 directory "#{node['joomla']['dir']}/installation" do
   recursive true
   action :delete
 end
+

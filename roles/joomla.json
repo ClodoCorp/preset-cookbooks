@@ -3,7 +3,7 @@
     "system": {
       "name": "joomla",
       "version": "",
-      "downloads": "",
+      "downloads": "http://joomlaportal.ru/downloads/joomla/",
       "dir": "/var/www/joomla",
       "pass": ""
     },

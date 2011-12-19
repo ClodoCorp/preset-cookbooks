@@ -2,38 +2,38 @@
 <?php
 
 $ARG_DEBUG = true;
-$ARG_DB = "joomladb";
-$ARG_DBUSER = "joomlauser";
-$ARG_DBPASS = "test";
-$ARG_DBHOST = "localhost";
-$ARG_DBPORT = "";
-$ARG_DBPREF = "";
 
-$ARG_TITLE = "clodo joomla preset";
+$ARGS=array();
+$ARGS['title'] = "clodo joomla preset";
+$ARGS['login'] = "admin";
+$ARGS['pass'] = "admin";
+$ARGS['email'] = "presets@clodo.ru";
+$ARGS['domain'] = "http://".gethostbyaddr('127.0.0.1').".clodo.ru";
+$ARGS['db_name'] = "joomla";
+$ARGS['db_login'] = "joomla";
+$ARGS['db_pass'] = "joomla";
+$ARGS['db_port'] = "";
+$ARGS['db_pref'] = "";
+$ARGS['db_host'] = "localhost";
+$ARGS['db_type'] = "mysqli";
 
-$ARG_NAME = "admin";
-if (isset($argv[1])) $ARG_NAME = $argv[1];
+foreach ($argv as $arg) {
+  $parts = explode("=", $arg);
+  if (is_array($parts) && isset($parts[0]) && isset($parts[1]) && $parts[1] != NULL && $parts[0] != NULL && preg_match('/администратора/', $parts[1]) == 0) $ARGS[$parts[0]] = $parts[1];
+}
 
-$ARG_PASS = "adminadmin";
-if (isset($argv[2])) $ARG_PASS = $argv[2];
-
-$ARG_EMAIL = "admin@clodo.ru";
-if (isset($argv[3])) $ARG_EMAIL = $argv[3];
-
-$ARG_URL = "http://".gethostbyaddr('127.0.0.1').".clodo.ru";
-if (isset($argv[4])) $ARG_URL = $argv[4];
+var_dump($ARGS);
 
 $ARG_COOKIE = "cookie.txt";
-if (isset($argv[5])) $ARG_COOKIE = $argv[5];
 
 $ch = curl_init();
-curl_setopt ($ch, CURLOPT_URL, $ARG_URL . "/installation/index.php");
+curl_setopt ($ch, CURLOPT_URL, $ARGS['domain'] . "/installation/index.php");
 curl_setopt ($ch, CURLOPT_USERAGENT, "Mozilla/5.0 (Windows; U; Windows NT 5.1; en-US; rv:1.8.1.6) Gecko/20070725 Firefox/2.0.0.6");
 curl_setopt ($ch, CURLOPT_TIMEOUT, 120);
 curl_setopt ($ch, CURLOPT_FOLLOWLOCATION, 1);
 curl_setopt ($ch, CURLOPT_COOKIEFILE, $ARG_COOKIE);
 curl_setopt ($ch, CURLOPT_COOKIEJAR, $ARG_COOKIE);
-curl_setopt ($ch, CURLOPT_REFERER, $ARG_URL . "/installation/index.php");
+curl_setopt ($ch, CURLOPT_REFERER, $ARGS['domain'] . "/installation/index.php");
 curl_setopt ($ch, CURLOPT_RETURNTRANSFER, 1);
 $result = curl_exec ($ch);
 if ($ARG_DEBUG) var_dump($result);
@@ -54,7 +54,7 @@ $POST_LEN = strlen($POST_DATA);
 $POST_HEADERS = array(
         'Content-type: application/x-www-form-urlencoded', 'Content-length: '.$POST_LEN);
 
-curl_setopt ($ch, CURLOPT_URL, $ARG_URL . "/installation/index.php");
+curl_setopt ($ch, CURLOPT_URL, $ARGS['domain'] . "/installation/index.php");
 curl_setopt ($ch, CURLOPT_SSL_VERIFYPEER, FALSE);
 curl_setopt ($ch, CURLOPT_USERAGENT, "Mozilla/5.0 (Windows; U; Windows NT 5.1; en-US; rv:1.8.1.6) Gecko/20070725 Firefox/2.0.0.6");
 curl_setopt ($ch, CURLOPT_TIMEOUT, 120);
@@ -63,7 +63,7 @@ curl_setopt ($ch, CURLOPT_HTTPHEADER, $POST_HEADERS);
 curl_setopt ($ch, CURLOPT_RETURNTRANSFER, 1);
 curl_setopt ($ch, CURLOPT_COOKIEFILE, $ARG_COOKIE);
 curl_setopt ($ch, CURLOPT_COOKIEJAR, $ARG_COOKIE);
-curl_setopt ($ch, CURLOPT_REFERER, $ARG_URL . "/installation/index.php");
+curl_setopt ($ch, CURLOPT_REFERER, $ARGS['domain'] . "/installation/index.php");
 curl_setopt ($ch, CURLOPT_POSTFIELDS, $POST_DATA);
 curl_setopt ($ch, CURLOPT_POST, 1);
 $result = curl_exec ($ch);
@@ -82,7 +82,7 @@ $POST_LEN = strlen($POST_DATA);
 $POST_HEADERS = array(
         'Content-type: application/x-www-form-urlencoded', 'Content-length: '.$POST_LEN);
 
-curl_setopt ($ch, CURLOPT_URL, $ARG_URL."/installation/index.php?view=license");
+curl_setopt ($ch, CURLOPT_URL, $ARGS['domain']."/installation/index.php?view=license");
 curl_setopt ($ch, CURLOPT_SSL_VERIFYPEER, FALSE);
 curl_setopt ($ch, CURLOPT_USERAGENT, "Mozilla/5.0 (Windows; U; Windows NT 5.1; en-US; rv:1.8.1.6) Gecko/20070725 Firefox/2.0.0.6");
 curl_setopt ($ch, CURLOPT_TIMEOUT, 120);
@@ -93,7 +93,7 @@ curl_setopt ($ch, CURLOPT_POST, 1);
 curl_setopt ($ch, CURLOPT_RETURNTRANSFER, 1);
 curl_setopt ($ch, CURLOPT_COOKIEFILE, $ARG_COOKIE);
 curl_setopt ($ch, CURLOPT_COOKIEJAR, $ARG_COOKIE);
-curl_setopt ($ch, CURLOPT_REFERER, $ARG_URL . "/installation/index.php?view=language");
+curl_setopt ($ch, CURLOPT_REFERER, $ARGS['domain'] . "/installation/index.php?view=language");
 $result = curl_exec ($ch);
 if ($ARG_DEBUG) var_dump($result);
 
@@ -110,7 +110,7 @@ $POST_LEN = strlen($POST_DATA);
 $POST_HEADERS = array(
         'Content-type: application/x-www-form-urlencoded', 'Content-length: '.$POST_LEN);
 
-curl_setopt ($ch, CURLOPT_URL, $ARG_URL."/installation/index.php?view=database");
+curl_setopt ($ch, CURLOPT_URL, $ARGS['domain']."/installation/index.php?view=database");
 curl_setopt ($ch, CURLOPT_SSL_VERIFYPEER, FALSE);
 curl_setopt ($ch, CURLOPT_USERAGENT, "Mozilla/5.0 (Windows; U; Windows NT 5.1; en-US; rv:1.8.1.6) Gecko/20070725 Firefox/2.0.0.6");
 curl_setopt ($ch, CURLOPT_TIMEOUT, 120);
@@ -121,19 +121,19 @@ curl_setopt ($ch, CURLOPT_HTTPHEADER, $POST_HEADERS);
 curl_setopt ($ch, CURLOPT_RETURNTRANSFER, 1);
 curl_setopt ($ch, CURLOPT_COOKIEFILE, $ARG_COOKIE);
 curl_setopt ($ch, CURLOPT_COOKIEJAR, $ARG_COOKIE);
-curl_setopt ($ch, CURLOPT_REFERER, $ARG_URL . "/installation/index.php?view=license");
+curl_setopt ($ch, CURLOPT_REFERER, $ARGS['domain'] . "/installation/index.php?view=license");
 $result = curl_exec ($ch);
 if ($ARG_DEBUG) var_dump($result);
 
 $DATA = array(
         'task' => 'setup.database',
 	$spoof[1] => '1',
-	'jform[db_type]' => 'mysqli',
-	'jform[db_host]' => 'localhost',
-	'jform[db_user]' => $ARG_DBUSER,
-	'jform[db_pass]' => $ARG_DBPASS,
-	'jform[db_name]' => $ARG_DB,
-	'jform[db_prefix]' => substr(sha1($ARG_DBPASS), 0, 4).'_',
+	'jform[db_type]' => $ARGS['db_type'],
+	'jform[db_host]' => $ARGS['db_host'],
+	'jform[db_user]' => $ARGS['db_login'],
+	'jform[db_pass]' => $ARGS['db_pass'],
+	'jform[db_name]' => $ARGS['db_name'],
+	'jform[db_prefix]' => substr(sha1($ARGS['db_pass']), 0, 4).'_',
 	'jform[db_old]' => 'remove');
 
 $POST_DATA = array();
@@ -144,7 +144,7 @@ $POST_DATA = implode("&", $POST_DATA);
 $POST_LEN = strlen($POST_DATA);
 $POST_HEADERS = array(
         'Content-type: application/x-www-form-urlencoded', 'Content-length: '.$POST_LEN);
-curl_setopt ($ch, CURLOPT_URL, $ARG_URL."/installation/index.php?view=database");
+curl_setopt ($ch, CURLOPT_URL, $ARGS['domain']."/installation/index.php?view=database");
 curl_setopt ($ch, CURLOPT_SSL_VERIFYPEER, FALSE);
 curl_setopt ($ch, CURLOPT_USERAGENT, "Mozilla/5.0 (Windows; U; Windows NT 5.1; en-US; rv:1.8.1.6) Gecko/20070725 Firefox/2.0.0.6");
 curl_setopt ($ch, CURLOPT_TIMEOUT, 120);
@@ -156,7 +156,7 @@ curl_setopt ($ch, CURLOPT_POST, 1);
 curl_setopt ($ch, CURLOPT_RETURNTRANSFER, 1);
 curl_setopt ($ch, CURLOPT_COOKIEFILE, $ARG_COOKIE);
 curl_setopt ($ch, CURLOPT_COOKIEJAR, $ARG_COOKIE);
-curl_setopt ($ch, CURLOPT_REFERER, $ARG_URL . "/installation/index.php?view=database");
+curl_setopt ($ch, CURLOPT_REFERER, $ARGS['domain'] . "/installation/index.php?view=database");
 $result = curl_exec ($ch);
 if ($ARG_DEBUG) var_dump($result);
 
@@ -181,7 +181,7 @@ $POST_DATA = implode("&", $POST_DATA);
 $POST_LEN = strlen($POST_DATA);
 $POST_HEADERS = array(
         'Content-type: application/x-www-form-urlencoded', 'Content-length: '.$POST_LEN);
-curl_setopt ($ch, CURLOPT_URL, $ARG_URL."/installation/index.php?view=filesystem");
+curl_setopt ($ch, CURLOPT_URL, $ARGS['domain']."/installation/index.php?view=filesystem");
 curl_setopt ($ch, CURLOPT_SSL_VERIFYPEER, FALSE);
 curl_setopt ($ch, CURLOPT_USERAGENT, "Mozilla/5.0 (Windows; U; Windows NT 5.1; en-US; rv:1.8.1.6) Gecko/20070725 Firefox/2.0.0.6");
 curl_setopt ($ch, CURLOPT_TIMEOUT, 120);
@@ -193,7 +193,7 @@ curl_setopt ($ch, CURLOPT_POST, 1);
 curl_setopt ($ch, CURLOPT_RETURNTRANSFER, 1);
 curl_setopt ($ch, CURLOPT_COOKIEFILE, $ARG_COOKIE);
 curl_setopt ($ch, CURLOPT_COOKIEJAR, $ARG_COOKIE);
-curl_setopt ($ch, CURLOPT_REFERER, $ARG_URL . "/installation/index.php?view=filesystem");
+curl_setopt ($ch, CURLOPT_REFERER, $ARGS['domain'] . "/installation/index.php?view=filesystem");
 $result = curl_exec ($ch);
 if ($ARG_DEBUG) var_dump($result);
 
@@ -201,13 +201,13 @@ if ($ARG_DEBUG) var_dump($result);
 $DATA = array(
         'task' => 'setup.saveconfig',
         $spoof[1] => '1',
-        'jform[site_name]' => $ARG_TITLE,
+        'jform[site_name]' => $ARGS['title'],
         'jform[site_metadesc]' => '',
         'jform[site_metakeys]' => '',
-        'jform[admin_email]' => $ARG_EMAIL,
-        'jform[admin_user]' => $ARG_NAME,
-        'jform[admin_password]' => $ARG_PASS,
-        'jform[admin_password2]' => $ARG_PASS,
+        'jform[admin_email]' => $ARGS['email'],
+        'jform[admin_user]' => $ARGS['login'],
+        'jform[admin_password]' => $ARGS['pass'],
+        'jform[admin_password2]' => $ARGS['pass'],
         'jform[sample_installed]' => 0);
 
 $POST_DATA = array();
@@ -218,7 +218,7 @@ $POST_DATA = implode("&", $POST_DATA);
 $POST_LEN = strlen($POST_DATA);
 $POST_HEADERS = array(
         'Content-type: application/x-www-form-urlencoded', 'Content-length: '.$POST_LEN);
-curl_setopt ($ch, CURLOPT_URL, $ARG_URL."/installation/index.php?view=site");
+curl_setopt ($ch, CURLOPT_URL, $ARGS['domain']."/installation/index.php?view=site");
 curl_setopt ($ch, CURLOPT_SSL_VERIFYPEER, FALSE);
 curl_setopt ($ch, CURLOPT_USERAGENT, "Mozilla/5.0 (Windows; U; Windows NT 5.1; en-US; rv:1.8.1.6) Gecko/20070725 Firefox/2.0.0.6");
 curl_setopt ($ch, CURLOPT_TIMEOUT, 120);
@@ -230,7 +230,7 @@ curl_setopt ($ch, CURLOPT_POST, 1);
 curl_setopt ($ch, CURLOPT_RETURNTRANSFER, 1);
 curl_setopt ($ch, CURLOPT_COOKIEFILE, $ARG_COOKIE);
 curl_setopt ($ch, CURLOPT_COOKIEJAR, $ARG_COOKIE);
-curl_setopt ($ch, CURLOPT_REFERER, $ARG_URL . "/installation/index.php?view=site");
+curl_setopt ($ch, CURLOPT_REFERER, $ARGS['domain'] . "/installation/index.php?view=site");
 $result = curl_exec ($ch);
 if ($ARG_DEBUG) var_dump($result);
 
