@@ -11,8 +11,8 @@ module Config_mysql
    R_READ_RND_BUFFER_SIZE	= [2097152,33554432]
    R_QUERY_CACHE_LIMIT		= [1048576,33554432]
    R_QUERY_CACHE_SIZE		= [8388608,536870912]
-   R_TABLE_OPEN_CACHE		= [56,10000]
-   R_TABLE_DEFINITION_CACHE	= [56,10000]
+   R_TABLE_OPEN_CACHE		= [32,10000]
+   R_TABLE_DEFINITION_CACHE	= [32,10000]
    R_THREAD_STACK		= [262144,524288]
    R_THREAD_CACHE_SIZE		= [10,2000]
    R_MAX_ALLOWED_PACKET		= [16777216,33554432]
@@ -58,8 +58,8 @@ module Config_mysql
 		  mem_use_p,
 		  query_cache_limit 	= 1048576,
 		  query_cache_size 	= 16777216,
-		  table_open_cache 	= 56,
-		  table_definition_cache = 56,
+		  table_open_cache 	= 32,
+		  table_definition_cache = 32,
 		  thread_cache_size 	= 10,
 		  max_allowed_packet 	= 16777216,
 		  max_heap_table_size 	= 33554432,
