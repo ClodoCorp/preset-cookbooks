@@ -42,7 +42,7 @@ def set_vars(value)
 end
 
 #node.load_attribute_by_short_filename('default', 'mysql')
-set_vars(60)
+set_vars(50)
 
 include_recipe "mysql::client"
 
