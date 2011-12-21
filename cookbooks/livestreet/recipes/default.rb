@@ -2,6 +2,7 @@ include_recipe "mysql::server"
 include_recipe "php"
 include_recipe "php::module_mysql"
 include_recipe "php::module_curl"
+include_recipe "sphinx"
 
 package "exim4-daemon-light"
 package "unzip"
@@ -36,3 +37,28 @@ execute "owner" do
   command "chown -R www-data:www-data #{node['web_app']['system']['dir']}"
 end
 
+execute "sphinx" do
+  command "sed -i 's/^START=no/START=yes/g' /etc/default/sphinxsearch"
+end
+
+template "/etc/sphinxsearch/sphinx.conf" do
+  source "sphinx.conf.erb"
+  owner "root"
+  group "root"
+  cookbook "livestreet"
+  mode 0600
+  backup false
+  notifies :restart, resources(:service => "sphinxsearch")
+end
+
+
+cron "topicsIndex" do
+  hour "*/33"
+  minute "10"
+  command "/usr/bin/indexer --rotate topicsIndex > /dev/null 2>&1"
+end
+
+cron "commentsIndex" do
+  minute "*/50"
+  command "/usr/bin/indexer --rotate commentsIndex > /dev/null 2>&1"
+end

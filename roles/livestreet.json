@@ -20,6 +20,7 @@
          "recipe[mysql::server]",
 	 "recipe[php]",
          "recipe[php::module_mysql]",
+	 "recipe[sphinx]",
          "recipe[livestreet]",
 	 "recipe[livestreet::apache_app]",
 	 "recipe[livestreet::setup]"
