@@ -12,9 +12,9 @@ source lsParentSource
 {
         type            = mysql
         sql_host        = localhost
-        sql_user        = <%= #{node['web_app']['system']['name']} %>
-        sql_pass        = <%= #{node['web_app']['system']['pass']} %>
-        sql_db          = <%= #{node['web_app']['system']['name']} %>
+        sql_user        = <%= node['web_app']['system']['name'] %>
+        sql_pass        = <%= node['web_app']['system']['pass'] %>
+        sql_db          = <%= node['web_app']['system']['name'] %>
         sql_port        = 3306
         # Для ускорения работы прописываем путь до MySQL-го UNIX-сокета (чтобы
         # операции с БД происходили не через TCP/IP стек сервера)
@@ -79,7 +79,7 @@ index topicsIndex
 {
         # Источник, который будет хранить данный индекса
         source                  = topicsSource
-        path                    = /var/lib/data/topicIndex
+        path                    = /var/lib/sphinxsearch/data/topicIndex
 
         # Тип хранения аттрибутов
         docinfo                 = extern
@@ -102,7 +102,7 @@ index topicsIndex
 index commentsIndex
 {
         source                  = commentsSource
-        path                    = /var/lib/data/commentsIndex
+        path                    = /var/lib/sphinxsearch/data/commentsIndex
 
         docinfo                 = extern
 
@@ -146,10 +146,10 @@ searchd
         # port                            = 3312
 
         # Лог-файл демона
-        log                                     = /var/log/sphinx/searchd.log
+        log                                     = /var/log/sphinxsearch/searchd.log
 
         # Лог поисковых запросов. Если закомментировать,то логировать поисковые строки не будет
-        query_log                       = /var/log/sphinx/query.log
+        query_log                       = /var/log/sphinxsearch/query.log
 
         # Время в секундах, которое ждет демон при обмене данными с клиентом. По исчерпании происходит разрыв коннекта
         read_timeout            = 5
@@ -158,5 +158,5 @@ searchd
         max_children            = 30
 
         # Файл, в который сохраняется PID-процесса при запуске
-        pid_file                        = /var/log/sphinx/searchd.pid
+        pid_file                        = /var/log/sphinxsearch/searchd.pid
 }

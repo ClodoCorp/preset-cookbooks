@@ -1,6 +1,6 @@
 package "sphinxsearch"
 
-service "sphinxsearch" do
+service "searchd" do
   start_command "/usr/sbin/invoke-rc.d sphinxsearch start && sleep 1"
   stop_command "/usr/sbin/invoke-rc.d sphinxsearch stop && sleep 1"
   restart_command "/usr/sbin/invoke-rc.d sphinxsearch restart && sleep 1"

@@ -48,7 +48,7 @@ template "/etc/sphinxsearch/sphinx.conf" do
   cookbook "livestreet"
   mode 0600
   backup false
-  notifies :restart, resources(:service => "sphinxsearch")
+  notifies :restart, resources(:service => "searchd")
 end
 
 
