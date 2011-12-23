@@ -3,10 +3,12 @@ include_recipe "php"
 include_recipe "php::module_mysql"
 include_recipe "php::module_gd"
 include_recipe "php::module_curl"
-
+include_recipe "system"
 package "exim4-daemon-light"
 
-remote_file "#{Chef::Config[:file_cache_path]}/#{node['web_app']['system']['name']}-#{node['web_app']['system']['version']}.tar.gz" do
+mirror_file "#{node['web_app']['system']['name']}-#{node['web_app']['system']['version']}.tar.gz" do
+  path "#{Chef::Config[:file_cache_path]}/#{node['web_app']['system']['name']}-#{node['web_app']['system']['version']}.tar.gz"
+#  name "#{Chef::Config[:file_cache_path]}/#{node['web_app']['system']['name']}-#{node['web_app']['system']['version']}.tar.gz"
   source "#{node['web_app']['system']['downloads']}/files/projects/#{node['web_app']['system']['name']}-#{node['web_app']['system']['version']}.tar.gz"
   mode 0644
 end
