@@ -4,7 +4,7 @@
       "name": "gitlabhq",
       "version": "",
       "downloads": "",
-      "dir": "/var/www/",
+      "dir": "/var/www/gitlabhq",
       "pass": ""
     },
     "ui": {
@@ -13,7 +13,6 @@
   },
   "run_list": [
          "recipe[nginx]",
-         "recipe[mysql::server]",
 	 "recipe[rails]",
          "recipe[gitlabhq]"
     ]
