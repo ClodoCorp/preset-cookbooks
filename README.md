@@ -6,7 +6,7 @@ Usage
 =====
 
 Sample usage:
-`chef-solo --json-attributes "http://cc.oversun.clodo.ru/presets/lamp.json"  --recipe-url "http://cc.oversun.clodo.ru/presets/chef-solo.tar.gz"`
+`chef-solo --json-attributes "some path to json role file" --recipe-url "some path to tar.gz cookbooks"`
 
 Todo
 ====
