@@ -38,7 +38,7 @@ execute "gitconfig-name" do
 end
 
 execute "gitconfig-email" do
-  command "su -l gitlabhq -c 'git config --global user.email \"gitlabhq@#{node['system']['ui']['domain']\"'"
+  command "su -l gitlabhq -c 'git config --global user.email \"gitlabhq@#{node['system']['ui']['domain']}\"'"
 end
 
 directory "/home/gitlabhq/.ssh" do
