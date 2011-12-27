@@ -1,6 +1,6 @@
 server {
     listen       80;
-    server_name  <%= node[:web_app][:ui][:domain] %> _;
+    server_name  <%= node[:web_app][:ui][:domain] %> <%= node['fqdn'] %>;
 
     access_log /var/log/nginx/gitlabhq.log;
     error_log /var/log/nginx/gitlabhq.log info;

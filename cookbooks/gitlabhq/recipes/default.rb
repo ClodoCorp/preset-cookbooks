@@ -8,9 +8,24 @@ ruby_block "reset group list" do
   action :nothing
 end
 
-%w{gitolite python-dev python-pip git-core git-svn sendmail zlib1g ssh openssl git-core wget curl gcc checkinstall libxml2-dev libxslt-dev sqlite3 libsqlite3-dev libcurl4-openssl-dev libc6-dev libssl-dev libmysql++-dev make build-essential zlib1g-dev postfix ruby1.9.1 openssh-server rubygems libdaemons-ruby nginx}.each do |pkg|
+%w{gitolite python-dev python-pip git-core git-svn sendmail zlib1g ssh openssl git-core wget curl gcc checkinstall libxml2-dev libxslt-dev sqlite3 libsqlite3-dev libcurl4-openssl-dev libc6-dev libssl-dev libmysql++-dev make build-essential zlib1g-dev postfix ruby1.9.1 openssh-server rubygems ruby1.9.1-dev}.each do |pkg|
   package "#{pkg}"
 end
+
+
+gem_package("daemons") do
+  gem_binary("/usr/bin/gem1.9.1")
+  version "1.1.4"
+  action :install
+#  options("--prerelease --no-format-executable")
+end
+
+#package "daemons" do
+#  version "1.1.4"
+#  action :install
+#  gem_binary "gem1.9.1"
+#  provider Chef::Provider::Package::Rubygems
+#end
 
 group "git" do
   action :create
@@ -65,6 +80,8 @@ end
 directory "/home/gitlabhq/.ssh" do
   action :create
   recursive true
+  owner "gitlabhq"
+  group "gitlabhq"
 end
 
 execute "ssh-keys" do
@@ -109,20 +126,17 @@ execute "gl-setup" do
   command "gl-setup -q /home/git/rails.pub"
 end
 
-execute "owner" do
-  command "chown -R git:git /home/git/repositories/"
+directory "/home/git/repositories/" do
+  action :create
+  recursive true
+  owner "git"
+  group "git"
 end
 
 execute "mode" do
   command "chmod -R g+rwX /home/git/repositories/; chmod g+r /home/git"
 end
 
-#execute "ssh-login" do
-#  user "gitlabhq"
-#  group "gitlabhq"
-#  environment ({'HOME' => '/home/gitlabhq'})
-#  command "ssh -o StrictHostKeyChecking=no gitlabhq@localhost"
-#end
 
 execute "python-modules" do
   command "pip install pygments"
@@ -164,12 +178,32 @@ execute "fix-owner" do
   command "chown -R gitlabhq:gitlabhq #{node['web_app']['system']['dir']}"
 end
 
+directory "#{node['web_app']['system']['dir']}/tmp/pids" do
+  action :create
+  recursive true
+  owner "gitlabhq"
+  group "gitlabhq"
+end
+
+
 execute "bundle-modules" do
 #  user "gitlabhq"
 #  group "gitlabhq"
 #  environment ({'HOME' => '/home/gitlabhq'})
   cwd "#{node['web_app']['system']['dir']}"
   command "bundle install --without development test"
+end
+
+execute "seeding-email" do
+  command "sed \"s/admin@local.host/#{node['web_app']['ui']['email']}/g\" -i #{node['web_app']['system']['dir']}/db/fixtures/production/001_admin.rb"
+end
+
+execute "seeding-pass" do
+  command "sed \"s/5iveL!fe/#{node['web_app']['ui']['pass']}/g\" -i #{node['web_app']['system']['dir']}/db/fixtures/production/001_admin.rb"
+end
+
+execute "seeding-name" do
+  command "sed \"s/Administrator/#{node['web_app']['ui']['login']}/g\" -i #{node['web_app']['system']['dir']}/db/fixtures/production/001_admin.rb"
 end
 
 execute "rake-setup" do
@@ -188,13 +222,20 @@ execute "rake-seed_fu" do
   command "bundle exec rake db:seed_fu RAILS_ENV=production"
 end
 
-execute "thin" do
-  command "thin install"
+template "/etc/init.d/thin" do
+  source "thin.erb"
+  backup 0
 end
 
 execute "thin-rc.d" do
   command "/usr/sbin/update-rc.d -f thin defaults"
 end
+
+directory "/etc/thin" do
+  action :create
+  recursive true
+end
+
 
 file "/etc/thin/gitlabhq.yml" do
   content "
@@ -215,7 +256,6 @@ servers: 1
 daemonize: 1"
 end
 
-
 service "thin" do
   start_command "/usr/sbin/invoke-rc.d thin start && sleep 1"
   stop_command "/usr/sbin/invoke-rc.d thin stop && sleep 1"
@@ -230,5 +270,16 @@ end
 
 nginx_conf "gitlabhq" do
   cookbook "gitlabhq"
+end
+
+nginx_site "gitlabhq.conf" do
+  cookbook "gitlabhq"
+  action "create"
+  enable true
+end
+
+nginx_site "default" do
+  action "delete"
+  disable true
 end
 
