@@ -1,4 +1,3 @@
-include_recipe "rails"
 include_recipe "nginx"
 
 ruby_block "reset group list" do
@@ -8,8 +7,21 @@ ruby_block "reset group list" do
   action :nothing
 end
 
-%w{gitolite python-dev python-pip git-core git-svn sendmail zlib1g ssh openssl git-core wget curl gcc checkinstall libxml2-dev libxslt-dev sqlite3 libsqlite3-dev libcurl4-openssl-dev libc6-dev libssl-dev libmysql++-dev make build-essential zlib1g-dev postfix ruby1.9.1 openssh-server rubygems ruby1.9.1-dev}.each do |pkg|
+%w{libicu-dev gitolite python-dev python-pip git-core git-svn sendmail zlib1g ssh openssl git-core wget curl gcc checkinstall libxml2-dev libxslt-dev sqlite3 libsqlite3-dev libcurl4-openssl-dev libc6-dev libssl-dev libmysql++-dev make build-essential zlib1g-dev postfix ruby1.9.1 openssh-server ruby1.9.1-dev}.each do |pkg|
   package "#{pkg}"
+end
+
+gem_package("rack") do
+  gem_binary("/usr/bin/gem1.9.1")
+  version "1.3.5"
+  action :install
+  options("--include-dependencies --no-format-executable")
+end
+
+gem_package("rails") do
+  gem_binary("/usr/bin/gem1.9.1")
+  action :install
+  options("--include-dependencies --no-format-executable")
 end
 
 
@@ -17,15 +29,8 @@ gem_package("daemons") do
   gem_binary("/usr/bin/gem1.9.1")
   version "1.1.4"
   action :install
-#  options("--prerelease --no-format-executable")
+  options("--include-dependencies --no-format-executable")
 end
-
-#package "daemons" do
-#  version "1.1.4"
-#  action :install
-#  gem_binary "gem1.9.1"
-#  provider Chef::Provider::Package::Rubygems
-#end
 
 group "git" do
   action :create
@@ -66,7 +71,7 @@ execute "gitconfig-name" do
   group "gitlabhq"
   environment ({'HOME' => '/home/gitlabhq'})
   cwd "/home/gitlabhq"
-  command "git config --global user.name \"Vasiliy Tolstov\""
+  command "git config --global user.name \"Gitlabhq\""
 end
 
 execute "gitconfig-email" do
@@ -75,6 +80,11 @@ execute "gitconfig-email" do
   environment ({'HOME' => '/home/gitlabhq'})
   cwd "/home/gitlabhq"
   command "git config --global user.email \"gitlabhq@#{node['web_app']['ui']['domain']}\""
+end
+
+directory "/var/www" do
+  action :create
+  recursive true
 end
 
 directory "/home/gitlabhq/.ssh" do
@@ -178,13 +188,17 @@ execute "fix-owner" do
   command "chown -R gitlabhq:gitlabhq #{node['web_app']['system']['dir']}"
 end
 
-directory "#{node['web_app']['system']['dir']}/tmp/pids" do
+directory "#{node['web_app']['system']['dir']}/tmp" do
   action :create
-  recursive true
   owner "gitlabhq"
   group "gitlabhq"
 end
 
+directory "#{node['web_app']['system']['dir']}/tmp/pids" do
+  action :create
+  owner "gitlabhq"
+  group "gitlabhq"
+end
 
 execute "bundle-modules" do
 #  user "gitlabhq"
@@ -206,6 +220,14 @@ execute "seeding-name" do
   command "sed \"s/Administrator/#{node['web_app']['ui']['login']}/g\" -i #{node['web_app']['system']['dir']}/db/fixtures/production/001_admin.rb"
 end
 
+execute "gitlab-email" do
+  command "sed \"s/gitlabhq.com/#{node['web_app']['ui']['email']}/g\" -i #{node['web_app']['system']['dir']}/config/gitlab.yml"
+end
+
+execute "gitlab-host" do
+  command "sed \"s/localhost/#{node['web_app']['ui']['domain']}/g\" -i #{node['web_app']['system']['dir']}/config/gitlab.yml"
+end
+
 execute "rake-setup" do
   user "gitlabhq"
   group "gitlabhq"
@@ -223,6 +245,9 @@ execute "rake-seed_fu" do
 end
 
 template "/etc/init.d/thin" do
+  mode 0755
+  owner "root"
+  group "root"
   source "thin.erb"
   backup 0
 end
@@ -236,6 +261,13 @@ directory "/etc/thin" do
   recursive true
 end
 
+execute "remove rack" do
+  command "/usr/bin/gem1.9.1 uninstall rack -v '>=1.3.6'"
+end
+
+execute "remove daemons" do
+  command "/usr/bin/gem1.9.1 uninstall daemons -v '>=1.1.5'"
+end
 
 file "/etc/thin/gitlabhq.yml" do
   content "
