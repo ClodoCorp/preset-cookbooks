@@ -1,0 +1,21 @@
+{
+  "web_app": {
+    "system": {
+      "name": "gitlabhq",
+      "version": "",
+      "downloads": "",
+      "dir": "/var/www/gitlabhq",
+      "pass": ""
+    },
+    "ui": {
+      "login": "Логин администратора",
+      "pass": "Пароль администратора",
+      "email": "Почта администратора",
+      "domain" : "Домен"
+    }
+  },
+  "run_list": [
+         "recipe[nginx]",
+         "recipe[gitlabhq]"
+    ]
+}
