@@ -2,7 +2,7 @@
   "web_app": {
     "system": {
       "name": "modx",
-      "version": "",
+      "version": "2.2.0-pl2",
       "downloads": "",
       "dir": "/var/www/modx",
       "pass": ""

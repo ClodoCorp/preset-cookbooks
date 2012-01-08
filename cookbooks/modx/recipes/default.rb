@@ -7,7 +7,7 @@ package "exim4-daemon-light"
 package "unzip"
 
 remote_file "#{Chef::Config[:file_cache_path]}/#{node['web_app']['system']['name']}-#{node['web_app']['system']['version']}.zip" do
-  source "modx-2.1.5-pl.zip"
+  source "modx-2.2.0-pl2.zip"
   mode "0644"
 end
 
@@ -21,7 +21,7 @@ end
 
 execute "unzip-modx" do
   cwd "#{node['web_app']['system']['dir']}"
-  command "unzip #{Chef::Config[:file_cache_path]}/#{node['web_app']['system']['name']}-#{node['web_app']['system']['version']}.zip ; mv -f modx-2.1.5-pl/* .; rm -rf modx-2.1.5-pl"
+  command "unzip #{Chef::Config[:file_cache_path]}/#{node['web_app']['system']['name']}-#{node['web_app']['system']['version']}.zip ; mv -f modx-2.2.0-pl2/* .; rm -rf modx-2.2.0-pl2"
   creates "#{node['web_app']['system']['dir']}/index.php"
 end
 
