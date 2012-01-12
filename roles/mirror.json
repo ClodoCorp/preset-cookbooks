@@ -11,15 +11,8 @@
       "domain" : "домен"
     }
   },
-  "nginx": {
-    "sites": [ "mirror.clodo.ru" ],
-    "confs": [ "mirror" ],
-    "dirs": [ "/var/www/temp", "/var/www/mirror" ]
-  },
-  "cron": {
-    "daily": [ "mirror_clean" ]
-  },
   "run_list": [
-         "recipe[mirror]"
+         "recipe[mirror]",
+         "recipe[chef::clean]"
   ]
 }

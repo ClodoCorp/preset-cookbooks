@@ -1,7 +1,7 @@
 {
   "web_app": {
     "system": {
-      "name": "LAMP",
+      "name": "lamp",
       "version": "",
       "downloads": "",
       "dir": "/var/www/",
@@ -16,6 +16,7 @@
          "recipe[mysql::server]",
          "recipe[php]",
          "recipe[php::module_mysql]",
-         "recipe[apache2::mod_php5]"
+         "recipe[apache2::mod_php5]",
+         "recipe[chef::clean]"
     ]
 }

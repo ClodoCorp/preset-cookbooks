@@ -22,6 +22,7 @@
          "recipe[php::module_mysql]",
          "recipe[modx]",
 	 "recipe[modx::apache_app]",
-	 "recipe[modx::setup]"
+	 "recipe[modx::setup]",
+	 "recipe[modx::clean]"
     ]
 }

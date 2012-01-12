@@ -23,6 +23,7 @@
 	 "recipe[sphinx]",
          "recipe[livestreet]",
 	 "recipe[livestreet::apache_app]",
-	 "recipe[livestreet::setup]"
+	 "recipe[livestreet::setup]",
+	 "recipe[livestreet::clean]"
     ]
 }

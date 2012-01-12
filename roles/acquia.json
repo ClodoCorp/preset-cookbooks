@@ -23,6 +23,7 @@
          "recipe[php::module_mysql]",
          "recipe[acquia]",
 	 "recipe[acquia::apache_app]",
-	 "recipe[acquia::setup]"
+	 "recipe[acquia::setup]",
+	 "recipe[acquia::clean]"
     ]
 }

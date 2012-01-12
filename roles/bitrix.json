@@ -17,6 +17,7 @@
     }
   },
   "run_list": [
-         "recipe[bitrix]"
+         "recipe[bitrix]",
+         "recipe[chef::clean]"
   ]
 }

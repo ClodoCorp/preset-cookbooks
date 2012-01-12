@@ -23,6 +23,7 @@
          "recipe[php::module_mysql]",
          "recipe[drupal]",
 	 "recipe[drupal::apache_app]",
-	 "recipe[drupal::setup]"
+	 "recipe[drupal::setup]",
+	 "recipe[drupal::clean]"
     ]
 }

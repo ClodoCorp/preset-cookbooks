@@ -16,6 +16,7 @@ archive:
 upload: archive
 #	scp chef-solo.tar.gz cc.kh.clodo.ru:/var/share/tftp/vase-boot/presets/
 	$(SCP) tmpdir/* cc00.oversun.clodo.ru:/var/share/tftp/repos/presets/
+	$(SCP) tmpdir/files/* pkgs.clodo.ru:/var/www/presets/
 	rm -rf tmpdir/
 
 upload_cookbooks:

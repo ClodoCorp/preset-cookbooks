@@ -1,7 +1,7 @@
 {
   "web_app": {
     "system": {
-      "name": "LEMP",
+      "name": "lemp",
       "version": "",
       "downloads": "",
       "dir": "/var/www/",
@@ -16,6 +16,7 @@
          "recipe[mysql::server]",
          "recipe[php]",
          "recipe[php::module_mysql]",
-         "recipe[php::module_fpm]"
+         "recipe[php::module_fpm]",
+         "recipe[chef::clean]"
     ]
 }

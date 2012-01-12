@@ -22,6 +22,7 @@
          "recipe[php::module_mysql]",
          "recipe[joomla]",
 	 "recipe[joomla::apache_app]",
-	 "recipe[joomla::setup]"
+	 "recipe[joomla::setup]",
+	 "recipe[joomla::clean]"
     ]
 }

@@ -1,7 +1,7 @@
 {
   "web_app": {
     "system": {
-      "name": "LEROR",
+      "name": "leror",
       "version": "",
       "downloads": "",
       "dir": "/var/www/",
@@ -14,6 +14,7 @@
   "run_list": [
          "recipe[nginx]",
          "recipe[mysql::server]",
-         "recipe[unicorn]"
+         "recipe[unicorn]",
+         "recipe[chef::clean]"
     ]
 }

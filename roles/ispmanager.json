@@ -6,9 +6,10 @@
       "downloads": "",
       "dir": "/usr/local/ispmgr",
       "pass": ""
-    },
+    }
   },
   "run_list": [
-         "recipe[ispmanager]"
+         "recipe[ispmanager]",
+         "recipe[chef::clean]"
   ]
 }

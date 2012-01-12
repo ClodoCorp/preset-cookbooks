@@ -22,6 +22,7 @@
          "recipe[php::module_mysql]",
          "recipe[wordpress]",
 	 "recipe[wordpress::apache_app]",
-	 "recipe[wordpress::setup]"
+	 "recipe[wordpress::setup]",
+	 "recipe[wordpress::clean]"
     ]
 }

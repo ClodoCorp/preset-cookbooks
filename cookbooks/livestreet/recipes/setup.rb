@@ -11,19 +11,19 @@ execute "setup" do
   action :nothing
 end
 
-execute "patch" do
-  cwd "#{node['web_app']['system']['dir']}"
-  command "patch -p1 < /tmp/c5b8e20d0ec380c2f2222fa266261d22dc36f926.patch"
-  action :nothing
-end
+#execute "patch" do
+#  cwd "#{node['web_app']['system']['dir']}"
+#  command "patch -p1 < /tmp/c5b8e20d0ec380c2f2222fa266261d22dc36f926.patch"
+#  action :nothing
+#end
 
-remote_file "/tmp/c5b8e20d0ec380c2f2222fa266261d22dc36f926.patch" do
-  source "c5b8e20d0ec380c2f2222fa266261d22dc36f926.patch"
-  cookbook "#{node['web_app']['system']['name']}"
-  mode 0600
-  backup 0
-  notifies :run, resources(:execute => "patch"), :immediately
-end
+#remote_file "/tmp/c5b8e20d0ec380c2f2222fa266261d22dc36f926.patch" do
+#  source "c5b8e20d0ec380c2f2222fa266261d22dc36f926.patch"
+#  cookbook "#{node['web_app']['system']['name']}"
+#  mode 0600
+#  backup 0
+#  notifies :run, resources(:execute => "patch"), :immediately
+#end
 
 
 remote_file "/tmp/setup.php" do
