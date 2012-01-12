@@ -22,6 +22,16 @@ execute "modify php-fpm include" do
   command "sed -i 's|include=/etc/php5/fpm/.*|include=/etc/php5/fpm/sites-enabled/*|g' /etc/php5/fpm/php-fpm.conf"
 end
 
+%w{sites-available sites-enabled}.each do |dir|
+  directory "/etc/php5/fpm/#{dir}" do
+    action :create
+    mode 0755
+    owner "root"
+    group "root"
+    notifies :reload, resources(:service => "#{node[:php][:fpm_service]}")
+  end
+end
+
 fpm_app "default" do
   template "default.conf.erb"
   cookbook "php"
@@ -32,16 +42,6 @@ fpm_app "default" do
   max_spare_servers "2"
 end
 
-
-%w{sites-available sites-enabled}.each do |dir|
-  directory "/etc/php5/fpm/#{dir}" do
-    action :create
-    mode 0755
-    owner "root"
-    group "root"
-    notifies :reload, resources(:service => "#{node[:php][:fpm_service]}")
-  end
-end
 
 service "#{node[:php][:fpm_service]}" do
   action :enable

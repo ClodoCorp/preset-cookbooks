@@ -23,7 +23,7 @@ define :fpm_app, :template => "fpm_app.conf.erb", :enable => true do
     end
   end
 
-  fpm_site "#{params[:name]}" do
+  fpm_site "#{params[:name]}.conf" do
     enable params[:enable]
   end
 end
