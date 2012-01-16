@@ -7,7 +7,7 @@ ruby_block "reset group list" do
   action :nothing
 end
 
-%w{libicu-dev gitolite python-dev python-pip git-core git-svn sendmail zlib1g ssh openssl git-core wget curl gcc checkinstall libxml2-dev libxslt-dev sqlite3 libsqlite3-dev libcurl4-openssl-dev libc6-dev libssl-dev libmysql++-dev make build-essential zlib1g-dev postfix ruby1.9.1 openssh-server ruby1.9.1-dev}.each do |pkg|
+%w{redis-server libicu-dev gitolite python-dev python-pip git-core git-svn sendmail zlib1g ssh openssl git-core wget curl gcc checkinstall libxml2-dev libxslt-dev sqlite3 libsqlite3-dev libcurl4-openssl-dev libc6-dev libssl-dev libmysql++-dev make build-essential zlib1g-dev postfix ruby1.9.1 openssh-server ruby1.9.1-dev}.each do |pkg|
   package "#{pkg}"
 end
 
