@@ -1,0 +1,22 @@
+{
+  "name": "chef-solo",
+  "chef_type": "role",
+  "description": "Chef-solo",
+  "web_app": {
+    "system": {
+      "name": "chef-solo",
+      "version": "",
+      "downloads": "",
+      "dir": "/var/www/",
+      "pass": ""
+    },
+    "ui": {
+      "json": "путь к json аттрибутам",
+      "recipes": "путь к фрхиву с рецептами"
+    }
+  },
+  "run_list": [
+         "recipe[chef::depends]",
+         "recipe[chef::solo]"
+    ]
+}

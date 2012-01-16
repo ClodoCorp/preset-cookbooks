@@ -1,10 +1,10 @@
 {
-  "name": "chef",
+  "name": "chef-server",
   "chef_type": "role",
   "description": "Chef server",
   "web_app": {
     "system": {
-      "name": "chef",
+      "name": "chef-server",
       "version": "",
       "downloads": "",
       "dir": "/var/www/",
