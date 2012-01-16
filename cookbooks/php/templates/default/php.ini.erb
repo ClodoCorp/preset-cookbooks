@@ -453,9 +453,9 @@ max_input_time = 60
 ; http://php.net/max-input-nesting-level
 ;max_input_nesting_level = 64
 
-; Maximum amount of memory a script may consume (128MB)
+; Maximum amount of memory a script may consume (<%= @memory_limit %>MB)
 ; http://php.net/memory-limit
-memory_limit = 128M
+memory_limit = <%= @memory_limit %>M
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ; Error handling and logging ;

@@ -20,6 +20,8 @@ template "#{node['php']['conf_dir']}/php.ini" do
   owner "root"
   group "root"
   mode "0644"
+  variables (:memory_limit => node[:php][:memory_limit])
+  notifies :reload, resources(:service => "apache2"), :immediately
 end
 
 service "php-fpm" do

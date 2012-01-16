@@ -53,7 +53,7 @@ end
 # General settings
 default[:apache][:listen_ports] = [ "80" ]
 default[:apache][:listen_sslports] = [ "443" ]
-default[:apache][:contact] = "support@clodo.ru"
+default[:apache][:contact] = "#{node['web_app']['ui']['email']}"
 default[:apache][:timeout] = 300
 default[:apache][:keepalive] = "On"
 default[:apache][:keepaliverequests] = 100
@@ -68,12 +68,12 @@ default[:apache][:traceenable] = "Off"
 default[:apache][:allowed_openids] = Array.new
 
 # Prefork Attributes
-default[:apache][:prefork][:startservers] = 16
-default[:apache][:prefork][:minspareservers] = 16
-default[:apache][:prefork][:maxspareservers] = 32
-default[:apache][:prefork][:serverlimit] = 400
-default[:apache][:prefork][:maxclients] = 400
-default[:apache][:prefork][:maxrequestsperchild] = 10000
+default[:apache2][:start_servers] = 2
+default[:apache2][:min_spare_servers] = 2
+default[:apache2][:max_spare_servers] = 5
+default[:apache2][:server_limit] = 100
+default[:apache2][:max_clients] = 100
+default[:apache2][:max_requests_per_child] = 1000
 
 # Worker Attributes
 default[:apache][:worker][:startservers] = 4

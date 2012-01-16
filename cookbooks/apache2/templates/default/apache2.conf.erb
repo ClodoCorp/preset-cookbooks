@@ -55,12 +55,12 @@ KeepAliveTimeout <%= node[:apache][:keepalivetimeout] %>
 # MaxClients: maximum number of server processes allowed to start
 # MaxRequestsPerChild: maximum number of requests a server process serves
 <IfModule mpm_prefork_module>
-    StartServers          <%= node[:apache][:prefork][:startservers] %>
-    MinSpareServers       <%= node[:apache][:prefork][:minspareservers] %>
-    MaxSpareServers       <%= node[:apache][:prefork][:maxspareservers] %>
-    ServerLimit           <%= node[:apache][:prefork][:serverlimit] %>
-    MaxClients            <%= node[:apache][:prefork][:maxclients] %>
-    MaxRequestsPerChild   <%= node[:apache][:prefork][:maxrequestsperchild] %>
+    StartServers          <%= node[:apache2][:start_servers] %>
+    MinSpareServers       <%= node[:apache2][:min_spare_servers] %>
+    MaxSpareServers       <%= node[:apache2][:max_spare_servers] %>
+    ServerLimit           <%= node[:apache2][:server_limit] %>
+    MaxClients            <%= node[:apache2][:max_clients] %>
+    MaxRequestsPerChild   <%= node[:apache2][:max_requests_per_child] %>
 </IfModule>
 
 # worker MPM

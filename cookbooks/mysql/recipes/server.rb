@@ -1,6 +1,6 @@
 
-class Chef::Recipe::Config_mysql 	# add class 
-  include Config_mysql 		# mix module mysql_config.rb from libraries
+class Chef::Recipe::Config_mysql 	# add class
+  include Config_mysql 		# mix module config.rb from libraries
 end
 
 def retvar(val, vdef)
@@ -16,7 +16,6 @@ def set_vars(value)
    $max_memory		= value
 
    mc = Chef::Recipe::Config_mysql.new($max_memory, $max_memory)
-#   node['mysql']['mysqld']['key_buffer_size'] = "tset"
    node['mysql']['mysqld']['key_buffer_size'] = retvar(node['mysql']['mysqld']['key_buffer_size'], mc.key_buffer_size)
    node['mysql']['mysqld']['sort_buffer_size'] = retvar(node['mysql']['mysqld']['sort_buffer_size'], mc.sort_buffer_size)
    node['mysql']['mysqld']['join_buffer_size'] = retvar(node['mysql']['mysqld']['join_buffer_size'], mc.join_buffer_size)	    
@@ -41,7 +40,6 @@ def set_vars(value)
    mc = nil
 end
 
-#node.load_attribute_by_short_filename('default', 'mysql')
 set_vars(50)
 
 include_recipe "mysql::client"

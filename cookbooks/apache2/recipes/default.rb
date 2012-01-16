@@ -17,6 +17,35 @@
 # limitations under the License.
 #
 
+
+class Chef::Recipe::Config_apache2        # add class
+  include Config_apache2          # mix module config.rb from libraries
+end
+
+def retvar(val, vdef)
+   if (defined?(val)).nil?
+      vdef = val
+   else
+      val =  vdef
+   end
+   return val
+end
+
+def set_vars(value)
+   $max_memory          = value
+
+   mc = Chef::Recipe::Config_apache2.new($max_memory, $max_memory, (node['php']['memory_limit']).to_i + 10*1024*1024)
+   node['apache2']['start_servers'] = retvar(node['apache2']['start_servers'], mc.start_servers)
+   node['apache2']['min_spare_servers'] = retvar(node['apache2']['min_spare_servers'], mc.min_spare_servers)
+   node['apache2']['max_spare_servers'] = retvar(node['apache2']['max_spare_servers'], mc.max_spare_servers)
+   node['apache2']['server_limit'] = retvar(node['apache2']['server_limit'], mc.server_limit)
+   node['apache2']['max_clients'] = retvar(node['apache2']['max_clients'], mc.max_clients)
+   node['apache2']['max_requests_per_child'] = retvar(node['apache2']['max_requests_per_child'], mc.max_requests_per_child)
+   mc = nil
+end
+
+set_vars(40)
+
 package "apache2" do
   case node[:platform]
   when "redhat","centos","scientific","fedora","suse"
