@@ -24,7 +24,7 @@ file "/tmp/setup.php" do
   backup 0
 end
 
-directory "#{node['joomla']['dir']}/installation" do
+directory "#{node['web_app']['system']['dir']}/installation" do
   recursive true
   action :delete
 end
