@@ -1,7 +1,6 @@
 {
   "name": "gitlabhq",
   "chef_type": "role",
-  "json_class": "Chef::Role",
   "description": "gitlabhq",
   "web_app": {
     "system": {
@@ -19,6 +18,7 @@
     }
   },
   "run_list": [
+	 "recipe[chef::depends]",
          "recipe[nginx]",
          "recipe[gitlabhq]"
     ]

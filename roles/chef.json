@@ -1,7 +1,6 @@
 {
   "name": "chef",
   "chef_type": "role",
-  "json_class": "Chef::Role",
   "description": "Chef server",
   "web_app": {
     "system": {
@@ -14,10 +13,11 @@
     "ui": {
       "login": "Логин администратора",
       "pass": "Пароль администратора",
-      "email": "Почта администратора"
+      "openid": "OpenID администратора"
     }
   },
   "run_list": [
+         "recipe[chef::depends]",
          "recipe[chef::server]"
     ]
 }

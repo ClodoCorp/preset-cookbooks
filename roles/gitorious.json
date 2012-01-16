@@ -1,7 +1,6 @@
 {
   "name": "gitorious",
   "chef_type": "role",
-  "json_class": "Chef::Role",
   "description": "gitorious",
   "web_app": {
     "system": {
@@ -16,6 +15,7 @@
     }
   },
   "run_list": [
+         "recipe[chef::depends]",
          "recipe[nginx]",
          "recipe[mysql::server]",
 	 "recipe[rails]",

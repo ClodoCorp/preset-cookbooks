@@ -1,7 +1,6 @@
 {
   "name": "bitrix",
   "chef_type": "role",
-  "json_class": "Chef::Role",
   "description": "Bitrix CMS",
   "web_app": {
     "system": {
@@ -21,6 +20,7 @@
     }
   },
   "run_list": [
+         "recipe[chef::depends]",
          "recipe[bitrix]",
          "recipe[chef::clean]"
   ]

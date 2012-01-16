@@ -1,7 +1,6 @@
 {
   "name": "ajenti",
   "chef_type": "role",
-  "json_class": "Chef::Role",
   "description": "Ajenti",
   "web_app": {
     "system": {
@@ -19,6 +18,7 @@
     }
   },
   "run_list": [
+         "recipe[chef::depends]",
          "recipe[ajenti]",
          "recipe[chef::clean]"
   ]

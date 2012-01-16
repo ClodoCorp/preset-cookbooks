@@ -1,7 +1,6 @@
 {
   "name": "ispmanager",
   "chef_type": "role",
-  "json_class": "Chef::Role",
   "description": "ISPmanager",
   "web_app": {
     "system": {
@@ -13,6 +12,7 @@
     }
   },
   "run_list": [
+         "recipe[chef::depends]",
          "recipe[ispmanager]",
          "recipe[chef::clean]"
   ]

@@ -1,7 +1,6 @@
 {
   "name": "mirror",
   "chef_type": "role",
-  "json_class": "Chef::Role",
   "description": "mirror",
   "web_app": {
     "system": {
@@ -16,6 +15,7 @@
     }
   },
   "run_list": [
+	 "recipe[chef::depends]",
          "recipe[mirror]",
          "recipe[chef::clean]"
   ]

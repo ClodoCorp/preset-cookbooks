@@ -1,7 +1,6 @@
 {
   "name": "leror",
   "chef_type": "role",
-  "json_class": "Chef::Role",
   "description": "LEROR stack",
   "web_app": {
     "system": {
@@ -16,6 +15,7 @@
     }
   },
   "run_list": [
+	 "recipe[chef::depends]",
          "recipe[nginx]",
          "recipe[mysql::server]",
          "recipe[unicorn]",
