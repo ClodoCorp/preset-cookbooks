@@ -1,4 +1,8 @@
 {
+  "name": "lamp",
+  "chef_type": "role",
+  "json_class": "Chef::Role",
+  "description": "LAMP stack",
   "web_app": {
     "system": {
       "name": "lamp",

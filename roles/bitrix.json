@@ -1,4 +1,8 @@
 {
+  "name": "bitrix",
+  "chef_type": "role",
+  "json_class": "Chef::Role",
+  "description": "Bitrix CMS",
   "web_app": {
     "system": {
       "name": "bitrix",

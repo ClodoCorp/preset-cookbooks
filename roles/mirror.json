@@ -1,4 +1,8 @@
 {
+  "name": "mirror",
+  "chef_type": "role",
+  "json_class": "Chef::Role",
+  "description": "mirror",
   "web_app": {
     "system": {
       "name": "mirror",

@@ -1,4 +1,8 @@
 {
+  "name": "gitlabhq",
+  "chef_type": "role",
+  "json_class": "Chef::Role",
+  "description": "gitlabhq",
   "web_app": {
     "system": {
       "name": "gitlabhq",

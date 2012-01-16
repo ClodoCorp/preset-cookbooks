@@ -1,4 +1,8 @@
 {
+  "name": "leror",
+  "chef_type": "role",
+  "json_class": "Chef::Role",
+  "description": "LEROR stack",
   "web_app": {
     "system": {
       "name": "leror",

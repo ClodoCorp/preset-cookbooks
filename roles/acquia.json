@@ -1,4 +1,8 @@
 {
+  "name": "acquia",
+  "chef_type": "role",
+  "json_class": "Chef::Role",
+  "description": "Drupal Acquia CMS",
   "web_app": {
     "system": {
       "name": "acquia",

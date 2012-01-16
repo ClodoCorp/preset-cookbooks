@@ -1,4 +1,8 @@
 {
+  "name": "livestreet",
+  "chef_type": "role",
+  "json_class": "Chef::Role",
+  "description": "Livestreet CMS",
   "web_app": {
     "system": {
       "name": "livestreet",

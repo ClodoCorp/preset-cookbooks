@@ -1,4 +1,8 @@
 {
+  "name": "modx",
+  "chef_type": "role",
+  "json_class": "Chef::Role",
+  "description": "modx CMS",
   "web_app": {
     "system": {
       "name": "modx",

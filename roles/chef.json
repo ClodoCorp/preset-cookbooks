@@ -1,4 +1,8 @@
 {
+  "name": "chef",
+  "chef_type": "role",
+  "json_class": "Chef::Role",
+  "description": "Chef server",
   "web_app": {
     "system": {
       "name": "chef",

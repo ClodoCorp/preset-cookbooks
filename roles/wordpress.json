@@ -1,8 +1,12 @@
 {
+  "name": "wordpress",
+  "chef_type": "role",
+  "json_class": "Chef::Role",
+  "description": "Wordpress CMS",
   "web_app": {
     "system": {
       "name": "wordpress",
-      "version": "3.3",
+      "version": "3.3.1",
       "downloads": "http://ru.wordpress.org",
       "dir": "/var/www/wordpress",
       "pass": ""

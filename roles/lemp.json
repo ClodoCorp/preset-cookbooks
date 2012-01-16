@@ -1,4 +1,8 @@
 {
+  "name": "lemp",
+  "chef_type": "role",
+  "json_class": "Chef::Role",
+  "description": "LEMP stack",
   "web_app": {
     "system": {
       "name": "lemp",

@@ -1,8 +1,12 @@
 {
+  "name": "joomla",
+  "chef_type": "role",
+  "json_class": "Chef::Role",
+  "description": "Joomla CMS",
   "web_app": {
     "system": {
       "name": "joomla",
-      "version": "",
+      "version": "1.7.3",
       "downloads": "http://joomlaportal.ru/downloads/joomla/",
       "dir": "/var/www/joomla",
       "pass": ""
