@@ -12,14 +12,13 @@
     },
     "ui": {
       "login": "Логин администратора",
-      "pass": "Пароль администратора",
-      "email": "Почта администратора",
-      "domain" : "Домен"
+      "pass": "Пароль администратора"
     }
   },
   "run_list": [
          "recipe[chef::depends]",
          "recipe[ajenti]",
+	 "recipe[ajenti::setup]",
          "recipe[chef::clean]"
   ]
 }
