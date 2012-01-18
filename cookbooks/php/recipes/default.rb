@@ -15,14 +15,11 @@ pkgs.each do |pkg|
   end
 end
 
-template "#{node['php']['conf_dir']}/php.ini" do
-  source "php.ini.erb"
-  owner "root"
-  group "root"
-  mode "0644"
-  variables (:memory_limit => node[:php][:memory_limit])
-  notifies :reload, resources(:service => "apache2"), :immediately
-end
+node['php']['service'] = nil
+node['php']['service'] = node["apache2"]['service'] if node[:web_app][:system][:name] == "lamp"
+node['php']['service'] = node["php"]['fpm_service'] if node[:web_app][:system][:name] == "lemp"
+
+template "#{node['php']['conf_dir']}/php.ini"
 
 service "php-fpm" do
   pattern "php-fpm"
@@ -34,6 +31,8 @@ service "php-fpm" do
     "default" => { "default" => [:restart, :reload ] }
   )
   action :nothing
+  only_if { ::File.exists?("/etc/init.d/php5-fpm") }
+  subscribes :restart, resources(:template => "#{node['php']['conf_dir']}/php.ini"), :immediately
 end
 
 service "php5-fpm" do
@@ -46,5 +45,16 @@ service "php5-fpm" do
     "default" => { "default" => [:restart, :reload ] }
   )
   action :nothing
+  only_if { ::File.exists?("/etc/init.d/php5-fpm") }
+  subscribes :restart, resources(:template => "#{node['php']['conf_dir']}/php.ini"), :immediately
+end
+
+
+template "#{node['php']['conf_dir']}/php.ini" do
+  source "php.ini.erb"
+  owner "root"
+  group "root"
+  mode "0644"
+  variables (:memory_limit => node[:php][:memory_limit])
 end
 

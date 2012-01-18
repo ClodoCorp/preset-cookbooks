@@ -58,6 +58,8 @@ package "apache2" do
   action :install
 end
 
+template "#{node['php']['conf_dir']}/php.ini"
+
 service "apache2" do
   case node[:platform]
   when "redhat","centos","scientific","fedora","suse"
@@ -86,6 +88,7 @@ service "apache2" do
     "default" => { "default" => [:restart, :reload ] }
   )
   action :enable
+  subscribes :restart, resources(:template => "#{node['php']['conf_dir']}/php.ini"), :immediately
 end
 
 if platform?("redhat", "centos", "scientific", "fedora", "arch", "suse" )

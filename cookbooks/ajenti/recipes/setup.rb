@@ -10,7 +10,7 @@ node['web_app']['ui']['passhash'] = Base64.encode64(Digest::SHA1.digest("#{node[
   end
 end
 
-%w{webserver_common power services hosts network dns taskmgr terminal users iptables shell fm filesystems notepad cron logs sysload pkgman}.each do |pkg|
+%w{services webserver_common power hosts network dns taskmgr terminal users iptables shell fm filesystems notepad cron logs sysload pkgman}.each do |pkg|
   execute "get #{pkg}" do
     command "/usr/bin/ajenti-pkg get #{pkg}"
   end

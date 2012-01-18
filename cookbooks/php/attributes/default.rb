@@ -45,4 +45,6 @@ else
   default['php']['fpm_dir']       = '/etc/php5/fpm'
   default['php']['fpm_service']   = 'php-fpm'
 end
-  default['php']['memory_limit']  = '64'
+
+default['php']['memory_limit']  = '64'
+
