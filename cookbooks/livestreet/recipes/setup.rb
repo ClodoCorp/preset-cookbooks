@@ -1,47 +1,61 @@
 include_recipe "livestreet"
-include_recipe "hosts"
+include_recipe "chef::depends"
 
-hosts "127.0.0.1" do
-  action "add"
-  host "#{node['web_app']['ui']['domain']}"
-end
+ruby_block "setup" do
+  block do
+    Gem.clear_paths
+    require 'curb'
 
-execute "setup" do
-  command "php /tmp/setup.php 'login=#{node['web_app']['ui']['login']}' 'pass=#{node['web_app']['ui']['pass']}' 'email=#{node['web_app']['ui']['email']}' 'domain=#{node['web_app']['ui']['domain']}' 'title=#{node['web_app']['ui']['title']}' 'db_name=#{node['web_app']['system']['name']}' 'db_host=localhost' 'db_login=#{node['web_app']['system']['name']}' 'db_pass=#{node['web_app']['system']['pass']}'"
-  action :nothing
-end
+    timeout = 20
+    host = "localhost:80"
+    real_host = "#{node['web_app']['ui']['domain']}"
+    Chef::Log.info "call get on #{host}, maximal request time: #{timeout} seconds"
+    c = Curl::Easy.new() do |curl|
+      curl.url = "http://#{host}/"
+      curl.headers['Host'] = real_host
+      curl.verbose = true
+      curl.follow_location = true
+      curl.enable_cookies = true
+      curl.cookiefile = "/tmp/cookie.txt"
+      curl.timeout = timeout
+    end
+    c.perform
+    if c.response_code == 200
+      Chef::Log.info "GET success!"
+      c.url = "http://#{host}/install/?lang=russian"
+      c.http_get
+      Chef::Log.info "get1: #{c.body_str}"
+      c.http_post("install_env_params=1", "install_step_next=дальше")
+      c.perform
+      sleep(2)
+      c.http_post("install_db_params=1", "install_db_server=localhost", "install_db_port=3306",
+		  "install_db_name=#{node['web_app']['system']['name']}", "install_db_create=0",
+		  "install_db_convert=0", "install_db_convert_from_05=0", "install_db_user=#{node['web_app']['system']['name']}",
+		  "install_db_password=#{node['web_app']['system']['pass']}", "install_db_prefix=#{node['web_app']['system']['name']}_",
+		  "install_db_engine=InnoDB", "install_step_next=Дальше")
+      c.perform
+      sleep(2)
 
-#execute "patch" do
-#  cwd "#{node['web_app']['system']['dir']}"
-#  command "patch -p1 < /tmp/c5b8e20d0ec380c2f2222fa266261d22dc36f926.patch"
-#  action :nothing
-#end
-
-#remote_file "/tmp/c5b8e20d0ec380c2f2222fa266261d22dc36f926.patch" do
-#  source "c5b8e20d0ec380c2f2222fa266261d22dc36f926.patch"
-#  cookbook "#{node['web_app']['system']['name']}"
-#  mode 0600
-#  backup 0
-#  notifies :run, resources(:execute => "patch"), :immediately
-#end
-
-
-remote_file "/tmp/setup.php" do
-  source "setup.php"
-  cookbook "#{node['web_app']['system']['name']}"
-  mode 0600
-  backup 0
-  notifies :run, resources(:execute => "setup"), :immediately
-end
-
-file "/tmp/setup.php" do
-  action :delete
-  backup 0
-end
-
-file "/tmp/c5b8e20d0ec380c2f2222fa266261d22dc36f926.patch" do
-  action :delete
-  backup 0
+      c.http_post("install_admin_params=1", "install_admin_login=#{node['web_app']['ui']['login']}",
+		  "install_admin_mail=#{node['web_app']['ui']['email']}", "install_admin_pass=#{node['web_app']['ui']['pass']}",
+		  "install_admin_repass=#{node['web_app']['ui']['pass']}", "install_step_next=Дальше")
+      c.perform
+      sleep(2)
+      Chef::Log.info "get2: #{c.body_str}"
+      if c.response_code == 200
+        Chef::Log.info "Step 1 success!"
+	c.url = "http://#{host}/"
+	c.http_get
+	Chef::Log.info "get5: #{c.body_str}"
+      else
+	 Chef::Log.error "Step 1 failed!"
+      end
+    else
+      Chef::Log.error "GET failed!"
+    end
+    c.close()
+  end
+  action :create
 end
 
 
