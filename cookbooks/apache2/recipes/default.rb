@@ -58,7 +58,9 @@ package "apache2" do
   action :install
 end
 
-template "#{node['php']['conf_dir']}/php.ini"
+template "#{node['php']['conf_dir']}/php.ini" do
+  action :nothing
+end
 
 service "apache2" do
   case node[:platform]
