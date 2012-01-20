@@ -19,6 +19,6 @@
          "recipe[chef::depends]",
          "recipe[ajenti]",
 	 "recipe[ajenti::setup]",
-         "recipe[chef::clean]"
+         "recipe[ajenti::clean]"
   ]
 }

@@ -22,6 +22,6 @@
   "run_list": [
          "recipe[chef::depends]",
          "recipe[bitrix]",
-         "recipe[chef::clean]"
+         "recipe[bitrix::clean]"
   ]
 }
