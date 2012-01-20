@@ -1,0 +1,21 @@
+{
+  "name": "ejabberd",
+  "chef_type": "role",
+  "description": "ejabberd server",
+  "web_app": {
+    "system": {
+      "name": "ejabberd",
+      "version": "",
+      "pass": ""
+    },
+    "ui": {
+      "login": "Логин администратора",
+      "pass": "Пароль администратора",
+      "domain" : "Домен"
+    }
+  },
+  "run_list": [
+         "recipe[chef::depends]",
+         "recipe[ejabberd]"
+    ]
+}
