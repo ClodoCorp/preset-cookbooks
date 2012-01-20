@@ -11,6 +11,10 @@ remote_file "#{Chef::Config[:file_cache_path]}/#{node['web_app']['system']['name
   mode 0644
 end
 
+apache_php_value "memory_limit" do
+  value "128M"
+end
+
 directory "#{node['web_app']['system']['dir']}" do
   owner "www-data"
   group "www-data"
