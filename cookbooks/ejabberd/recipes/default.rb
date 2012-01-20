@@ -23,7 +23,7 @@ ruby_block "Add ejabberd user" do
   block do
     # TODO: Check return value and use nicer system call    
     ret = 111
-    until ret != 0
+    until ret == 0
         mon=`ejabberdctl status 1>/dev/null;`
 	ret = $?
 	sleep 1
