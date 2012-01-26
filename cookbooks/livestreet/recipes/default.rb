@@ -63,3 +63,5 @@ cron "commentsIndex" do
   minute "*/50"
   command "/usr/bin/indexer --rotate commentsIndex > /dev/null 2>&1"
 end
+
+

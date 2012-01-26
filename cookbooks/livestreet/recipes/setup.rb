@@ -63,3 +63,8 @@ directory "#{node['web_app']['system']['dir']}/install" do
   action :delete
   recursive true
 end
+
+execute "sphinx reindex" do
+  command "/usr/bin/indexer --rotate --all > /dev/null 2>&1"
+end
+

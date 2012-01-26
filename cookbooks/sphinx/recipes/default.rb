@@ -11,3 +11,9 @@ service "searchd" do
   action :nothing
 end
 
+
+directory " /var/lib/sphinxsearch/data" do
+  mode 0755
+  action :create
+  recursive true
+end
