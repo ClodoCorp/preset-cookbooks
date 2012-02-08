@@ -1,5 +1,12 @@
 include_recipe "drupal"
 include_recipe "chef::depends"
+include_recipe "hosts"
+
+hosts "127.0.0.1" do
+  action "add"
+  host "#{node['web_app']['ui']['domain']}"
+end
+
 
 ruby_block "setup" do
   block do

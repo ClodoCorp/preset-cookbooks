@@ -2,6 +2,7 @@ include_recipe "mysql::server"
 include_recipe "php"
 include_recipe "php::module_mysql"
 include_recipe "php::module_curl"
+include_recipe "php::module_gd"
 include_recipe "sphinx"
 
 package "exim4-daemon-light"
