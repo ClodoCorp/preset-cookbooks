@@ -36,6 +36,7 @@ for DOMAIN in $DOMAINS; do
     echo "delete from records where domain_id='"${DOMAIN_ID}"';" | $MYSQL
     echo "delete from records where name='"${DOMAIN}"';" | $MYSQL
 done
+pdns_control rediscover
 echo -n > /var/log/pdns
 service rsyslog reload
 
