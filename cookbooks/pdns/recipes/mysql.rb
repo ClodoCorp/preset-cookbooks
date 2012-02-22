@@ -26,6 +26,7 @@ package "pdns-backend-mysql" do
     ["redhat","centos","fedora"] => { "default" => "pdns-backend-mysql" },
     "default" => "pdns-backend-mysql"
   )
+  response_file "pdns-backend-mysql.erb"
 end
 
 directory "/var/lib/pdns"
@@ -42,5 +43,5 @@ mysql_grants "#{node['web_app']['system']['name']}" do
 end
 
 execute "load pdns schema" do
-  command "/usr/bin/mysql -u root -p#{node['web_app']['system']['pass']} < /tmp/pdns_schema.sql"
+  command "/usr/bin/mysql -u root -p#{node['web_app']['system']['pass']} -D#{node['web_app']['system']['name']} < /tmp/pdns_schema.sql"
 end

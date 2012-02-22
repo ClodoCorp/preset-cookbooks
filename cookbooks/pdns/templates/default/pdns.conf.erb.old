@@ -3,11 +3,11 @@
 # allow-axfr-ips    If enabled, restrict zonetransfers to originate from these
 #                   IP addresses
 #
-<% if node["web_app"]["ui"]["master"] != "" %>
-allow-axfr-ips=<%= node["web_app"]["ui"]["master"] %>
-<% else %>
+<%= if node["web_app"]["ui"]["master"] != "" %>
+allow-axfr-ips=<%= node["pdns"]["server"]["allow_axfr"].join(", ") %>
+<%= else %>
 #allow-axfr-ips=
-<% end %>
+<%= end %>
 
 #################################
 # allow-recursion	List of netmasks that are allowed to recurse
@@ -83,7 +83,17 @@ guardian=yes
 #################################
 # launch	Which backends to launch and order to query them in
 #
-#launch=
+<%= if node['pdns']['server_backend'] == "mysql" %>
+launch=gmysql
+gmysql-host=127.0.0.1
+gmysql-user=<%= node["web_app"]["system"]["name"] %>
+gmysql-password=<%= node["web_app"]["system"]["pass"] %>
+gmysql-dbname=<%= node["web_app"]["system"]["name"] %>
+<%= end %>
+<%= if node['pdns']['server_backend'] == "sqlite3" %>
+launch=gsqlite3
+gsqlite-database=/var/lib/pdns/<%= node["web_app"]["system"]["name"] %>
+<%= end %>
 
 #################################
 # lazy-recursion	Only recurse if question cannot be answered locally
@@ -138,11 +148,11 @@ logfile=/var/log/pdns.log
 #################################
 # master	Act as a master
 #
-<% if node["web_app"]["ui"]["master"] != "" %>
+<%= if node["web_app"]["ui"]["master"] != "" %>
 master=no
-<% else %>
+<%= else %>
 master=yes
-<% end %>
+<%= end %>
 
 #################################
 # max-queue-length	Maximum queuelength before considering situation lost
@@ -222,11 +232,11 @@ setuid=<%= node["pdns"]["user"] %>
 #################################
 # slave	Act as a slave
 #
-<% if node["web_app"]["ui"]["master"] != "" %>
-slave=yes
-<% else %>
+<%= if node["web_app"]["ui"]["master"] != "" %>
 slave=no
-<% end %>
+<%= else %>
+slave=yes
+<%= end %>
 
 #################################
 # slave-cycle-interval	Reschedule failed SOA serial checks once every .. seconds

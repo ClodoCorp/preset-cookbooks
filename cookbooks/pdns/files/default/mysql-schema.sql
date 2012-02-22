@@ -1,3 +1,4 @@
+drop table if exists domains;
 create table domains (
  id		 BIGINT auto_increment,
  name		 VARCHAR(255) NOT NULL,
@@ -10,7 +11,7 @@ create table domains (
 ) Engine=InnoDB;
 
 CREATE UNIQUE INDEX name_index ON domains(name);
-
+drop table if exists records;
 CREATE TABLE records (
   id              BIGINT auto_increment,
   domain_id       BIGINT DEFAULT NULL,
@@ -27,12 +28,14 @@ CREATE INDEX rec_name_index ON records(name);
 CREATE INDEX nametype_index ON records(name,type);
 CREATE INDEX domain_id ON records(domain_id);
 
+drop table if exists supermasters;
 create table supermasters (
   ip VARCHAR(25) NOT NULL, 
   nameserver VARCHAR(255) NOT NULL, 
   account VARCHAR(40) DEFAULT NULL
 ) Engine=InnoDB;
 
+drop table if exists domainmetadata;
 create table domainmetadata (
  id		 BIGINT auto_increment,
  domain_id       BIGINT NOT NULL,
@@ -43,7 +46,7 @@ create table domainmetadata (
 
 create index domainmetaidindex on domainmetadata(domain_id);               
 
-
+drop table if exists cryptokeys;
 create table cryptokeys (
  id		BIGINT auto_increment,
  domain_id      BIGINT NOT NULL,
@@ -59,6 +62,7 @@ alter table records add ordername      VARCHAR(255);
 alter table records add auth bool;
 create index orderindex on records(ordername);
 
+drop table if exists tsigkeys;
 create table tsigkeys (
  id		BIGINT auto_increment,
  name		VARCHAR(255), 

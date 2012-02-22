@@ -1,0 +1,29 @@
+pdns-backend-mysql	pdns-backend-mysql/app-password-confirm	password <%= node['web_app']['system']['pass'] %>
+pdns-backend-mysql	pdns-backend-mysql/mysql/admin-pass	password <%= node['web_app']['system']['pass'] %>
+pdns-backend-mysql	pdns-backend-mysql/mysql/app-pass	password <%= node['web_app']['system']['pass'] %>
+pdns-backend-mysql	pdns-backend-mysql/password-confirm	password <%= node['web_app']['system']['pass'] %>
+pdns-backend-mysql	pdns-backend-mysql/upgrade-backup	boolean	true
+pdns-backend-mysql	pdns-backend-mysql/mysql/admin-user	string	root
+pdns-backend-mysql	pdns-backend-mysql/internal/skip-preseed	boolean	false
+pdns-server	pdns-server/localaddress	string	<%= node['network']['interfaces']['eth0']['addresses'].select { |address, data| data['family'] == 'inet' }[0][0] %>
+pdns-backend-mysql	pdns-backend-mysql/dbconfig-install	boolean	true
+pdns-backend-mysql	pdns-backend-mysql/dbconfig-upgrade	boolean	true
+pdns-backend-mysql	pdns-backend-mysql/remove-error	select	abort
+pdns-backend-mysql	pdns-backend-mysql/remote/host	select	
+pdns-backend-mysql	pdns-backend-mysql/dbconfig-remove	boolean	
+pdns-backend-mysql	pdns-backend-mysql/mysql/method	select	unix socket
+pdns-backend-mysql	pdns-backend-mysql/upgrade-error	select	abort
+pdns-backend-mysql	pdns-backend-mysql/install-error	select	abort
+pdns-backend-mysql	pdns-backend-mysql/db/dbname	string	pdns
+pdns-backend-mysql	pdns-backend-mysql/remote/port	string	
+pdns-backend-mysql	pdns-backend-mysql/purge	boolean	false
+pdns-server	pdns-server/allowrecursion	string	127.0.0.1
+pdns-backend-mysql	pdns-backend-mysql/internal/reconfiguring	boolean	false
+pdns-server	pdns-server/autostart	boolean	true
+pdns-backend-mysql	pdns-backend-mysql/missing-db-package-error	select	abort
+pdns-backend-mysql	pdns-backend-mysql/db/app-user	string	pdns
+pdns-backend-mysql	pdns-backend-mysql/dbconfig-reinstall	boolean	false
+pdns-backend-mysql	pdns-backend-mysql/passwords-do-not-match	error	
+pdns-backend-mysql	pdns-backend-mysql/database-type	select	mysql
+pdns-backend-mysql	pdns-backend-mysql/remote/newhost	string	
+

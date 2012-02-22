@@ -47,3 +47,35 @@ template "/etc/powerdns/pdns.d/preset.conf" do
   mode 0644
   notifies :restart, "service[pdns]", :immediately
 end
+
+cookbook_file "/etc/rsyslog.d/#{node[:web_app][:system][:name]}.conf" do
+  source "rsyslog.conf"
+  owner "root"
+  group "root"
+  mode 0644
+end
+
+execute "reload rsyslog hack" do
+  command "service rsyslog restart"
+end
+
+
+if node["web_app"]["ui"]["master"] != ""
+
+  cron "#{node[:web_app][:system][:name]}-slaveclean.sh" do
+    hour "23"
+    minute "10"
+    command "/usr/bin/pdns_server_slave_clean"
+  end
+
+  cookbook_file "/usr/bin/#{node[:web_app][:system][:name]}_server_slave_clean" do
+    source "clean.sh"
+    owner "root"
+    group "root"
+    mode 0700
+  end
+  execute "set supermaster" do
+    command "mysql -uroot -p#{node['web_app']['system']['pass']} -D#{node['web_app']['system']['name']} -e \"insert into supermasters (ip, nameserver, account) values ('#{node['web_app']['ui']['master']}', '#{node['web_app']['ui']['ns']}', 'system');\""
+  end
+end
+

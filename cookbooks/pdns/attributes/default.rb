@@ -33,9 +33,7 @@ default["pdns"]["server_backend"] = "mysql"
 
 default["pdns"]["recursor"]["allow_from"] = [
   "127.0.0.0/8",
-  "10.0.0.0/8",
-  ":1/128",
-  "e80::/10"
+  "10.0.0.0/8"
 ]
 
 default["pdns"]["server"]["allow_axfr"] = []
