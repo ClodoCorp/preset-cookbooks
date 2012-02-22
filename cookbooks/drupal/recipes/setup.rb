@@ -76,3 +76,8 @@ ruby_block "setup" do
   action :create
 end
 
+cron "#{node['web_app']['system']['name']}" do
+  hour "*/1"
+  minute "10"
+  command "/usr/bin/wget -qO - http://#{node['web_app']['ui']['domain']}/cron.php"
+end
