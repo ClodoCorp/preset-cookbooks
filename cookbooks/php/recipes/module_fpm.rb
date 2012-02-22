@@ -1,5 +1,19 @@
 
 include_recipe "php"
+include_recipe "apt"
+
+
+#apt_repository "dotdeb" do
+#  uri "http://packages.dotdeb.org"
+#  distribution "stable"
+#  components ["all"]
+#  key "http://www.dotdeb.org/dotdeb.gpg"
+#  action :add
+#end
+
+package "mysql-server" do
+  action :upgrade
+end
 
 case node['platform']
 when "debian", "ubuntu"
