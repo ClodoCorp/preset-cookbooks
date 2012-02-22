@@ -1,0 +1,21 @@
+{
+  "name": "pdns",
+  "chef_type": "role",
+  "description": "pdns server",
+  "web_app": {
+    "system": {
+      "name": "pdns",
+      "version": "3.0.1",
+      "pass": ""
+    },
+    "ui": {
+      "ns": "Неймсервер",
+      "master" : "Айпи адрес мастер сервера"
+    }
+  },
+  "run_list": [
+         "recipe[chef::depends]",
+         "recipe[pdns::server]",
+	 "recipe[chef::clean]"
+    ]
+}
