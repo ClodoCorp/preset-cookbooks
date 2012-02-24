@@ -6,7 +6,11 @@ define :fpm_app, :template => "fpm_app.conf.erb", :enable => true do
   include_recipe "php"
 
   template "#{node[:php]['fpm_dir']}/sites-available/#{application_name}.conf" do
-    source params[:template]
+    if params[:template]
+      source params[:template]
+    else
+      source "fpm_app.conf.erb"
+    end
     owner "root"
     group "root"
     mode 0644
@@ -24,6 +28,7 @@ define :fpm_app, :template => "fpm_app.conf.erb", :enable => true do
   end
 
   fpm_site "#{params[:name]}.conf" do
-    enable params[:enable]
+    enable params[:enable],
+    action "create"
   end
 end

@@ -3,7 +3,7 @@ define :nginx_site, :enable => true, :action => "", :vars => [] do
 
   if params[:action] == "create"
     template "#{node[:nginx][:dir]}/sites-available/#{params[:name]}" do
-      source "sites/#{params[:name]}.erb"
+      source "#{params[:name]}-nginx.erb"
       if params[:cookbook]
         cookbook params[:cookbook]
       end

@@ -2,6 +2,13 @@ include_recipe "joomla"
 include_recipe "chef::depends"
 include_recipe "hosts"
 
+case node[:web_app][:system][:backend]
+  when "apache"
+    include_recipe "joomla::apache_app"
+  when "php"
+    include_recipe "joomla::fpm_app"
+end
+
 hosts "127.0.0.1" do
   action "add"
   host "#{node['web_app']['ui']['domain']}"

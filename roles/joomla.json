@@ -8,7 +8,10 @@
       "version": "1.7.3",
       "downloads": "http://joomlaportal.ru/downloads/joomla/",
       "dir": "/var/www/joomla",
-      "pass": ""
+      "pass": "",
+      "frontend": "nginx",
+      "backend": "php",
+      "database": "mysql"
     },
     "ui": {
       "login": "Логин администратора",
@@ -20,13 +23,8 @@
   },
   "run_list": [
          "recipe[chef::depends]",
-         "recipe[apache2]",
-         "recipe[mysql::server]",
-	 "recipe[php]",
-         "recipe[php::module_mysql]",
          "recipe[joomla]",
-	 "recipe[joomla::apache_app]",
-	 "recipe[joomla::setup]",
-	 "recipe[joomla::clean]"
+         "recipe[joomla::setup]",
+         "recipe[chef::clean]"
     ]
 }

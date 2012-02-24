@@ -1,6 +1,19 @@
-include_recipe "mysql::server"
-include_recipe "php"
-include_recipe "php::module_mysql"
+
+case node[:web_app][:system][:backend]
+  when "apache"
+    include_recipe "apache2"
+    include_recipe "php"
+  when "php"
+    include_recipe "php"
+    include_recipe "php::module_fpm"
+end
+
+case node[:web_app][:system][:database]
+  when "mysql"
+    include_recipe "mysql:server"
+    include_recipe "php::module_mysql"
+end
+
 include_recipe "php::module_gd"
 include_recipe "php::module_curl"
 
@@ -31,7 +44,6 @@ end
 
 mysql_grants "#{node['web_app']['system']['name']}" do
 end
-
 
 #file "#{node['web_app']['system']['dir']}/.htaccess" do
 #  content "#{node['web_app']['system']['dir']}/htaccess.txt"

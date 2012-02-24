@@ -31,6 +31,7 @@ http {
   gzip_comp_level <%= node[:nginx][:gzip_comp_level] %>;
   gzip_proxied <%= node[:nginx][:gzip_proxied] %>;
   gzip_types <%= node[:nginx][:gzip_types].join(' ') %>;
+  gzip_disable "MSIE [1-6]\.";
   <% end %>
 
   server_names_hash_bucket_size <%= node[:nginx][:server_names_hash_bucket_size] %>;
