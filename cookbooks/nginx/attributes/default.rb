@@ -19,11 +19,9 @@ default[:nginx][:gzip_comp_level] = "5"
 default[:nginx][:gzip_proxied] = "any"
 default[:nginx][:gzip_types] = [
   "text/plain",
-  "text/html",
   "text/css",
   "application/x-javascript",
   "application/xhtml+xml",
-  "application/xml",
   "text/xml",
   "application/xml",
   "application/xml+rss",

@@ -161,7 +161,7 @@ service "mysql" do
     start_command "start mysql"
   end
   supports :status => true, :restart => true, :reload => true
-  action :nothing
+  action :start
 end
 
 

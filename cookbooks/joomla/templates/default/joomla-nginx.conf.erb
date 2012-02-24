@@ -1,13 +1,16 @@
+proxy_cache_path  /var/tmp/  levels=1:2   keys_zone=joomla:200m inactive=1h;
+
 server {
   listen 80;
-  server_name <%= @server_name %> <% @params[:server_aliases].each do |a| %><%= "#{a}" %> <% end %>;
+  server_name <%= @server_name %> <% @server_aliases.each do |a| %><%= "#{a}" %> <% end %>;
   server_name_in_redirect off;
 
-  access_log <%= node['nginx']['log_dir'] %>/<%= @params[:name] %>.access_log main;
-  error_log <%= node['nginx']['log_dir'] %>/<%= @params[:name] %>.error_log info;
+  access_log <%= node['nginx']['log_dir'] %>/<%= @name %>.access_log;
+  error_log <%= node['nginx']['log_dir'] %>/<%= @name %>.error_log info;
 
-  root <%= @params[:docroot] %>;
+  root <%= @docroot %>;
   index index.php index.html index.htm default.html default.htm;
+  fastcgi_index index.php;
 
   location / {
     try_files $uri $uri/ /index.php?q=$uri&$args;
@@ -19,8 +22,7 @@ server {
   }
 
   location ~ .*.php$ {
-    fastcgi_pass  unix://var/run/<%= @params[:name] %>.sock;
-    fastcgi_index index.php;
+    fastcgi_pass  unix://var/run/<%= @name %>.sock;
     include /etc/nginx/fastcgi_params;
     fastcgi_param SCRIPT_FILENAME $document_root$fastcgi_script_name;
   }
@@ -31,6 +33,25 @@ server {
 
   location ~* \.(js|css|png|jpg|jpeg|gif|swf|xml|txt)$ {
     expires 1d;
+  }
+
+
+  location /administrator {
+    fastcgi_cache off;
+    fastcgi_pass unix://var/run/<%= @name %>.sock;
+    include /etc/nginx/fastcgi_params;
+    fastcgi_param SCRIPT_FILENAME $document_root$fastcgi_script_name;
+  }
+
+  location / {
+    proxy_cache joomla;
+    proxy_cache_key  "$scheme$uri$is_args$args$host$cookie_user$proxy_host";
+    fastcgi_pass unix://var/run/<%= @name %>.sock;
+    client_max_body_size       30m;
+    client_body_buffer_size    128k;
+    fastcgi_cache_valid  200 302 304 10m;
+    fastcgi_cache_valid  301 1h;
+    fastcgi_cache_valid  any 1m;
   }
 
 }

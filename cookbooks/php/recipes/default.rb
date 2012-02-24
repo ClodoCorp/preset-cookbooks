@@ -1,16 +1,24 @@
 
 pkgs = value_for_platform(
   [ "centos", "redhat", "fedora" ] => {
-    "default" => %w{ php53 php53-cli php-pear }
+    "default" => %w{ php53-cli php-pear }
   },
   [ "debian", "ubuntu" ] => {
-    "default" => %w{ php5-cgi php5 php5-cli php-pear }
+    "default" => %w{ php5-cgi php5-cli php-pear }
   },
-  "default" => %w{ php5-cgi php5 php5-cli php-pear }
+  "default" => %w{ php5-cgi php5-cli php-pear }
 )
 
 pkgs.each do |pkg|
   package pkg do
+    action :install
+  end
+end
+
+if node[:web_app][:system].has_key?("backend")
+  Chef::Log.info "not need to install php5 with apache module"
+else
+  package "php5" do
     action :install
   end
 end

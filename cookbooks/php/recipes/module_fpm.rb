@@ -46,18 +46,24 @@ end
   end
 end
 
-fpm_app "default" do
-  template "default.conf.erb"
-  cookbook "php"
+fpm_site "default" do
   pool "default"
   pm_type "dynamic"
   max_children "10"
   min_spare_servers "1"
   max_spare_servers "2"
+  enable "true"
+  cookbook "php"
 end
-
 
 service "#{node[:php][:fpm_service]}" do
   action :enable
 end
+
+nginx_site "default" do
+  action "create"
+  source "default.conf.erb"
+  enable true
+end
+
 
