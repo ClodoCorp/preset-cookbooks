@@ -1,4 +1,4 @@
-fastcgi_cache_path  /var/tmp/  levels=1:2   keys_zone=joomla:10m inactive=5m;
+fastcgi_cache_path  /var/tmp/  levels=1:2   keys_zone=modx:10m inactive=5m;
 fastcgi_cache_key  "$proxy_host|$request_method|$scheme|$host|$request_uri|$is_args|$args|$cookie_user|$cookie_phpsessid|$cookie_sessioncookie";
 fastcgi_no_cache $cookie_nocache  $arg_nocache $arg_comment $cookie_session;
 fastcgi_no_cache $http_pragma     $http_authorization;
@@ -16,21 +16,15 @@ server {
   index index.php index.html index.htm default.html default.htm;
   fastcgi_index index.php;
 
-  location ~* /(images|cache|media|logs|tmp)/.*\.(php|pl|py|jsp|asp|sh|cgi)$ {
-    return 403;
-    error_page 403 /403_error.html;
-  }
-
   location ~ /\.ht {
     deny  all;
   }
 
-  #  location ~ \.php$ {
-  location ~ .*.php$ {
+  location ~ \.php$ {
     fastcgi_pass  unix://var/run/<%= @name %>.sock;
     fastcgi_param SCRIPT_FILENAME $document_root$fastcgi_script_name;
     <% if @cache == true %>
-    fastcgi_cache joomla;
+    fastcgi_cache modx;
     <% else %>
     fastcgi_cache off;
     <% end %>
@@ -44,23 +38,17 @@ server {
     include /etc/nginx/fastcgi_params;
   }
 
-  location ~* \.(ico|pdf|flv)$ {
-    expires 1d;
-  }
-
-  location ~* \.(js|css|png|jpg|jpeg|gif|swf|xml|txt)$ {
-    expires 1d;
-  }
-
-  location ~* /(administrator|installation)$ {
-    fastcgi_cache off;
-    fastcgi_pass unix://var/run/<%= @name %>.sock;
-    fastcgi_param SCRIPT_FILENAME $document_root$fastcgi_script_name;
-    include /etc/nginx/fastcgi_params;
+  location ~* ^.+\.(jpg|jpeg|gif|css|png|js|ico|bmp)$ {
+    expires           1d;
+    break;
   }
 
   location / {
-    try_files $uri $uri/ /index.php?q=$uri&$args;
+    try_files $uri $uri/ @rewrite;
+  }
+
+  location @rewrite {
+    rewrite ^/(.*)$ /index.php?q=$1;
   }
 
 }

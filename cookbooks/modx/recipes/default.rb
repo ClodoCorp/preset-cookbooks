@@ -1,8 +1,28 @@
-include_recipe "mysql::server"
-include_recipe "php"
-include_recipe "php::module_mysql"
-include_recipe "php::module_curl"
 
+include_recipe "php"
+
+case node[:web_app][:system][:database]
+  when "mysql"
+    include_recipe "mysql::server"
+    include_recipe "php::module_mysql"
+end
+
+case node[:web_app][:system][:frontend]
+  when "apache"
+    include_recipe "apache2"
+  when "nginx"
+    include_recipe "nginx"
+end
+
+case node[:web_app][:system][:backend]
+  when "apache"
+    include_recipe "apache2"
+  when "php"
+    include_recipe "php::module_fpm"
+end
+
+
+include_recipe "php::module_curl"
 package "exim4-daemon-light"
 package "unzip"
 

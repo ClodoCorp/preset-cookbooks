@@ -8,7 +8,10 @@
       "version": "2.2.0-pl2",
       "downloads": "",
       "dir": "/var/www/modx",
-      "pass": ""
+      "pass": "",
+      "frontend": "nginx",
+      "backend": "php",
+      "database": "mysql"
     },
     "ui": {
       "login": "Логин администратора",
@@ -20,13 +23,8 @@
   },
   "run_list": [
          "recipe[chef::depends]",
-         "recipe[apache2]",
-         "recipe[mysql::server]",
-	 "recipe[php]",
-         "recipe[php::module_mysql]",
          "recipe[modx]",
-	 "recipe[modx::apache_app]",
-	 "recipe[modx::setup]",
-	 "recipe[modx::clean]"
+         "recipe[modx::setup]",
+         "recipe[chef::clean]"
     ]
 }

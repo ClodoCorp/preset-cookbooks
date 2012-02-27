@@ -1,5 +1,19 @@
 include_recipe "modx"
 include_recipe "chef::depends"
+include_recipe "hosts"
+
+hosts "127.0.0.1" do
+  action "add"
+  host "#{node['web_app']['ui']['domain']}"
+end
+
+
+case node[:web_app][:system][:backend]
+  when "apache"
+    include_recipe "modx::apache_app"
+  when "php"
+    include_recipe "modx::fpm_app"
+end
 
 ruby_block "setup" do
   block do
