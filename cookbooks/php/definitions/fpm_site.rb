@@ -29,21 +29,21 @@ define :fpm_site, :template => "fpm_app.conf.erb", :enable => true do
   end
   if params[:enable]
     execute "fpmensite #{params[:name]}" do
-      command "/usr/sbin/fpmensite #{params[:name]}"
+      command "/usr/sbin/fpmensite #{params[:name]}.conf"
       notifies :restart, resources(:service => "#{node[:php][:fpm_service]}"), :immediately
       not_if do
-        ::File.symlink?("#{node[:php][:fpm_dir]}/sites-enabled/#{params[:name]}") or
-          ::File.symlink?("#{node[:php][:fpm_dir]}/sites-enabled/000-#{params[:name]}")
+        ::File.symlink?("#{node[:php][:fpm_dir]}/sites-enabled/#{params[:name]}.conf") or
+          ::File.symlink?("#{node[:php][:fpm_dir]}/sites-enabled/000-#{params[:name]}.conf")
       end
-      only_if do ::File.exists?("#{node[:php][:fpm_dir]}/sites-available/#{params[:name]}") end
+      only_if do ::File.exists?("#{node[:php][:fpm_dir]}/sites-available/#{params[:name]}.conf") end
     end
   else
     execute "fpmdissite #{params[:name]}" do
-      command "/usr/sbin/fpmdissite #{params[:name]}"
+      command "/usr/sbin/fpmdissite #{params[:name]}.conf"
       notifies :restart, resources(:service => "#{node[:php][:fpm_service]}"), :immediately
       only_if do
-        ::File.symlink?("#{node[:php][:fpm_dir]}/sites-enabled/#{params[:name]}") or
-          ::File.symlink?("#{node[:php][:fpm_dir]}/sites-enabled/000-#{params[:name]}")
+        ::File.symlink?("#{node[:php][:fpm_dir]}/sites-enabled/#{params[:name]}.conf") or
+          ::File.symlink?("#{node[:php][:fpm_dir]}/sites-enabled/000-#{params[:name]}.conf")
       end
     end
   end

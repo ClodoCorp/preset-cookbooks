@@ -9,7 +9,7 @@ define :nginx_conf do
     group "root"
     mode 0644
     source "confs/#{params[:name]}.conf.erb"
-    notifies :reload, resources(:service => "nginx")
+    notifies :reload, resources(:service => "nginx"), :immediately
   end
 end
 

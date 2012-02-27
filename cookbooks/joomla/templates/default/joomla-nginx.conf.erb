@@ -1,4 +1,8 @@
-proxy_cache_path  /var/tmp/  levels=1:2   keys_zone=joomla:200m inactive=1h;
+fastcgi_cache_path  /var/tmp/  levels=1:2   keys_zone=joomla:10m inactive=5m;
+fastcgi_cache_key  "$proxy_host|$request_method|$scheme|$host|$request_uri|$is_args|$args|$cookie_user|$cookie_phpsessid|$cookie_sessioncookie";
+fastcgi_no_cache $cookie_nocache  $arg_nocache $arg_comment $cookie_session;
+fastcgi_no_cache $http_pragma     $http_authorization;
+fastcgi_ignore_client_abort on;
 
 server {
   listen 80;
@@ -12,19 +16,28 @@ server {
   index index.php index.html index.htm default.html default.htm;
   fastcgi_index index.php;
 
-  location / {
-    try_files $uri $uri/ /index.php?q=$uri&$args;
-  }
-
   location ~* /(images|cache|media|logs|tmp)/.*\.(php|pl|py|jsp|asp|sh|cgi)$ {
     return 403;
     error_page 403 /403_error.html;
   }
 
+  #  location ~ \.php$ {
   location ~ .*.php$ {
     fastcgi_pass  unix://var/run/<%= @name %>.sock;
-    include /etc/nginx/fastcgi_params;
     fastcgi_param SCRIPT_FILENAME $document_root$fastcgi_script_name;
+    <% if @cache == true %>
+    fastcgi_cache joomla;
+    <% else %>
+    fastcgi_cache off;
+    <% end %>
+    client_max_body_size       30m;
+    client_body_buffer_size    128k;
+    fastcgi_cache_min_uses 1;
+    fastcgi_cache_use_stale error timeout invalid_header http_500;
+    fastcgi_cache_valid  200 302 304 10m;
+    fastcgi_cache_valid  301 1h;
+    fastcgi_cache_valid  any 3m;
+    include /etc/nginx/fastcgi_params;
   }
 
   location ~* \.(ico|pdf|flv)$ {
@@ -35,23 +48,15 @@ server {
     expires 1d;
   }
 
-
-  location /administrator {
+  location ~* /(administrator|installation)$ {
     fastcgi_cache off;
     fastcgi_pass unix://var/run/<%= @name %>.sock;
-    include /etc/nginx/fastcgi_params;
     fastcgi_param SCRIPT_FILENAME $document_root$fastcgi_script_name;
+    include /etc/nginx/fastcgi_params;
   }
 
   location / {
-    proxy_cache joomla;
-    proxy_cache_key  "$scheme$uri$is_args$args$host$cookie_user$proxy_host";
-    fastcgi_pass unix://var/run/<%= @name %>.sock;
-    client_max_body_size       30m;
-    client_body_buffer_size    128k;
-    fastcgi_cache_valid  200 302 304 10m;
-    fastcgi_cache_valid  301 1h;
-    fastcgi_cache_valid  any 1m;
+    try_files $uri $uri/ /index.php?q=$uri&$args;
   }
 
 }

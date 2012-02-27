@@ -23,7 +23,7 @@ define :nginx_site, :enable => true, :action => "", :vars => [] do
   if params[:enable]
     execute "nxensite #{params[:name]}" do
       command "/usr/sbin/nxensite #{params[:name]}"
-      notifies :reload, resources(:service => "nginx")
+      notifies :reload, resources(:service => "nginx"), :immediately
       not_if do ::File.symlink?("#{node[:nginx][:dir]}/sites-enabled/#{params[:name]}") end
     end
   end
