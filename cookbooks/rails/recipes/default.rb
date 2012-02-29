@@ -16,7 +16,7 @@ cookbook_file "/tmp/default.tar.gz" do
   cookbook "rails"
 end
 
-execute "rail-untar" do
+execute "rails-untar" do
   cwd "/var/www"
   command "tar -zxf /tmp/default.tar.gz"
   creates "/var/www/default/config/boot.rb"

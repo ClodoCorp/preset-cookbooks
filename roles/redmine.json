@@ -1,0 +1,26 @@
+{
+  "name": "redmine",
+  "chef_type": "role",
+  "description": "redmine",
+  "web_app": {
+    "system": {
+      "name": "redmine",
+      "version": "0.8.4",
+      "downloads": "",
+      "dir": "/var/www/redmine",
+      "pass": "",
+      "database": "mysql"
+    },
+    "ui": {
+      "login": "Логин администратора",
+      "pass": "Пароль администратора",
+      "email": "Почта администратора",
+      "domain" : "Домен"
+    }
+  },
+  "run_list": [
+	 "recipe[chef::depends]",
+         "recipe[redmine]",
+         "recipe[chef::clean]"
+    ]
+}
