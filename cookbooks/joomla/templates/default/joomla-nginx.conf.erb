@@ -2,6 +2,8 @@ fastcgi_cache_path  /var/tmp/  levels=1:2   keys_zone=joomla:10m inactive=5m;
 fastcgi_cache_key  "$proxy_host|$request_method|$scheme|$host|$request_uri|$is_args|$args|$cookie_user|$cookie_phpsessid|$cookie_sessioncookie";
 fastcgi_no_cache $cookie_nocache  $arg_nocache $arg_comment $cookie_session;
 fastcgi_no_cache $http_pragma     $http_authorization;
+fastcgi_cache_bypass $cookie_nocache $arg_nocache $arg_comment $cookie_session;
+fastcgi_cache_bypass $http_pragma  $http_authorization;
 fastcgi_ignore_client_abort on;
 
 server {
