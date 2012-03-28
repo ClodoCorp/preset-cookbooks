@@ -5,6 +5,12 @@ fastcgi_no_cache $http_pragma     $http_authorization;
 fastcgi_ignore_client_abort on;
 
 server {
+  listen  80;
+  server_name www.<%= @server_name %>;
+  rewrite ^ http://<%= @server_name %>$request_uri? permanent; 
+}
+
+server {
   listen 80;
   server_name <%= @server_name %> <% @server_aliases.each do |a| %><%= "#{a}" %> <% end %>;
   server_name_in_redirect off;
@@ -25,7 +31,6 @@ server {
     deny  all;
   }
 
-  #  location ~ \.php$ {
   location ~ .*.php$ {
     fastcgi_pass  unix://var/run/<%= @name %>.sock;
     fastcgi_param SCRIPT_FILENAME $document_root$fastcgi_script_name;
@@ -44,11 +49,7 @@ server {
     include /etc/nginx/fastcgi_params;
   }
 
-  location ~* \.(ico|pdf|flv)$ {
-    expires 1d;
-  }
-
-  location ~* \.(js|css|png|jpg|jpeg|gif|swf|xml|txt)$ {
+  location ~* \.(js|css|png|jpg|jpeg|gif|swf|xml|txt|ico|pdf|flv)$ {
     expires 1d;
   }
 
