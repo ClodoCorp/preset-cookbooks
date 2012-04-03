@@ -69,7 +69,7 @@ server {
     }
   }
 
-  location ~ ^/(wp-admin/.*\.php|wp-login\.php|wp-register\.php|(feed|comment/feed)(/.*)?)$ {
+  location ~ ^/(wp-admin/.*\.php|wp-login\.php|wp-register\.php)$ {
     try_files $uri @wordpress;
     set $do_not_cache 1;
     fastcgi_cache_bypass 1;
