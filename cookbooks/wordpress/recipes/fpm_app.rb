@@ -1,4 +1,5 @@
 include_recipe "php"
+include_recipe "nginx"
 
 fpm_site "#{node['web_app']['system']['name']}" do
   pool "#{node['web_app']['system']['name']}"

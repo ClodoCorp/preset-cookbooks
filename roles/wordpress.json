@@ -8,7 +8,10 @@
       "version": "3.3.1",
       "downloads": "http://ru.wordpress.org",
       "dir": "/var/www/wordpress",
-      "pass": ""
+      "pass": "",
+      "frontend": "nginx",
+      "backend": "php",
+      "database": "mysql"
     },
     "ui": {
       "login": "Логин администратора",
@@ -20,13 +23,8 @@
   },
   "run_list": [
          "recipe[chef::depends]",
-	 "recipe[apache2]",
-         "recipe[mysql::server]",
-	 "recipe[php]",
-         "recipe[php::module_mysql]",
          "recipe[wordpress]",
-	 "recipe[wordpress::apache_app]",
 	 "recipe[wordpress::setup]",
-	 "recipe[wordpress::clean]"
+	 "recipe[chef::clean]"
     ]
 }

@@ -27,12 +27,18 @@ server {
   index index.php index.html index.htm default.html default.htm;
   fastcgi_index index.php;
 
+  set $do_not_cache 0;
+
   if ($http_cookie ~* "comment_author_|wordpress_(?!test_cookie)|wp-postpass_" ) {
     set $do_not_cache 1;
   }
 
   location ~ /\.ht {
     deny  all;
+  }
+
+  location ^~ /files/ {
+    rewrite /files/(.+) /wp-includes/ms-files.php?file=$1 last;
   }
 
   location ~ \.php$ {
