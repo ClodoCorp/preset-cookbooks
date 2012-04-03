@@ -8,6 +8,13 @@ hosts "127.0.0.1" do
 end
 
 
+case node[:web_app][:system][:backend]
+  when "apache"
+    include_recipe "wordpress::apache_app"
+  when "php"
+    include_recipe "wordpress::fpm_app"
+end
+
 ruby_block "setup" do
   block do
     Gem.clear_paths

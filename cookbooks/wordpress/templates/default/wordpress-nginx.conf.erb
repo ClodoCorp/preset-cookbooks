@@ -1,0 +1,91 @@
+
+fastcgi_cache_path  /var/tmp/  levels=1:2   keys_zone=wordpress:10m max_size=512m inactive=5m;
+fastcgi_cache_key  "$proxy_host|$request_method|$scheme|$host|$request_uri|$is_args|$args|$cookie_user|$cookie_phpsessid|$cookie_sessioncookie";
+fastcgi_no_cache $cookie_nocache  $arg_nocache $arg_comment $cookie_session;
+fastcgi_no_cache $http_pragma     $http_authorization;
+fastcgi_cache_bypass $cookie_nocache $arg_nocache $arg_comment $cookie_session;
+fastcgi_cache_bypass $http_pragma  $http_authorization;
+fastcgi_ignore_client_abort on;
+
+server {
+  listen  80;
+  server_name www.<%= @server_name %>;
+  rewrite ^ http://<%= @server_name %>$request_uri? permanent; 
+}
+
+server {
+  listen 80;
+  server_name <%= @server_name %> <% @server_aliases.each do |a| %><%= "#{a}" %> <% end %>;
+  server_name_in_redirect off;
+
+  charset utf-8;
+
+  access_log <%= node['nginx']['log_dir'] %>/<%= @name %>.access_log;
+  error_log <%= node['nginx']['log_dir'] %>/<%= @name %>.error_log info;
+
+  root <%= @docroot %>;
+  index index.php index.html index.htm default.html default.htm;
+  fastcgi_index index.php;
+
+  if ($http_cookie ~* "comment_author_|wordpress_(?!test_cookie)|wp-postpass_" ) {
+    set $do_not_cache 1;
+  }
+
+  location ~ /\.ht {
+    deny  all;
+  }
+
+  location ~ \.php$ {
+    try_files $uri @wordpress;
+    fastcgi_pass unix://var/run/<%= @name %>.sock;
+    fastcgi_index index.php;
+    fastcgi_param SCRIPT_FILENAME $document_root$fastcgi_script_name;
+    if ($do_not_cache != "1") {
+      add_header Vary Cookie;
+    }
+    fastcgi_cache_bypass $do_not_cache;
+    fastcgi_no_cache $do_not_cache;
+    fastcgi_pass_header Cookie;
+    fastcgi_cache wordpress;
+
+    client_max_body_size       30m;
+    client_body_buffer_size    128k;
+
+    fastcgi_cache_min_uses 1;
+    fastcgi_cache_use_stale error timeout invalid_header http_500;
+    fastcgi_cache_valid  200 302 304 10m;
+    fastcgi_cache_valid  301 1h;
+    fastcgi_cache_valid  any 3m;
+    include /etc/nginx/fastcgi_params;
+  }
+
+  location @wordpress {
+    fastcgi_param SCRIPT_NAME /index.php;
+    fastcgi_param SCRIPT_FILENAME $document_root/index.php;
+    include /etc/nginx/fastcgi_params;
+    fastcgi_pass unix://var/run/<%= @name %>.sock;
+    if ($do_not_cache != "1") {
+      add_header Vary Cookie;
+    }
+  }
+
+  location ~ ^/(wp-admin/.*\.php|wp-login\.php|wp-register\.php|(feed|comment/feed)(/.*)?)$ {
+    try_files $uri @wordpress;
+    set $do_not_cache 1;
+    fastcgi_cache_bypass 1;
+    fastcgi_no_cache 1;
+    fastcgi_pass unix://var/run/<%= @name %>.sock;
+    fastcgi_param SCRIPT_FILENAME $document_root$fastcgi_script_name;
+    include /etc/nginx/fastcgi_params;
+  }
+
+  location ~* \.(js|css|png|jpg|jpeg|gif|swf|xml|txt|ico|pdf|flv)$ {
+    expires 1d;
+  }
+
+  location / {
+    try_files $uri $uri/ @wordpress;
+  }
+
+
+}
