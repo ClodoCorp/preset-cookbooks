@@ -54,7 +54,6 @@ end
 # General settings
 default[:apache][:listen_ports] = [ "80" ]
 default[:apache][:listen_sslports] = [ "443" ]
-default[:apache][:contact] = "#{node['web_app']['ui']['email']}"
 default[:apache][:timeout] = 300
 default[:apache][:keepalive] = "On"
 default[:apache][:keepaliverequests] = 100

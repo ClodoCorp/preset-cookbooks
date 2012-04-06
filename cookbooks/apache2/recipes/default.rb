@@ -17,6 +17,7 @@
 # limitations under the License.
 #
 
+node[:apache][:contact] = "#{node['web_app']['ui']['email']}"
 
 class Chef::Recipe::Config_apache2        # add class
   include Config_apache2          # mix module config.rb from libraries
