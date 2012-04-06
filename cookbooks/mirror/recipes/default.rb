@@ -16,12 +16,10 @@ execute "install" do
   environment ({'PATH' => '/sbin:/bin:/usr/sbin:/usr/bin:/usr/local/go/bin', 'GOBIN' => '/usr/sbin', 'GOPATH' => '/root/go'})
   cwd "/root"
   command "go get -u -v -x bitbucket.org/vase/pkgcached"
-  creates "/usr/sbin/pkgcached"
 end
 
 execute "init" do
   command "cp -f /root/go/src/bitbucket.org/vase/pkgcached/pkgcached.init /etc/init.d/pkgcached"
-  creates "/etc/init.d/pkgcached"
 end
 
 execute "perm" do
@@ -30,7 +28,6 @@ end
 
 execute "conf" do
   command "cp -f /root/go/src/bitbucket.org/vase/pkgcached/pkgcached.json /etc/pkgcached.json"
-  creates "/etc/pkgcached.json"
 end
 
 execute "defaults" do
