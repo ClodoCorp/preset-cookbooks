@@ -67,6 +67,6 @@ ruby_block "setup" do
 end
 
 execute "x-accel-redirect" do
-  command "echo define('WPMU_ACCEL_REDIRECT', true); >> #{node['web_app']['system']['dir']}/wp-config.php"
+  command "echo \"define('WPMU_ACCEL_REDIRECT', true);\" >> #{node['web_app']['system']['dir']}/wp-config.php"
 end
 
