@@ -15,7 +15,7 @@ define :chef_purge, :clean => true do
 #    end
 
 
-    directory "/var/chef" do
+    directory "/var/chef-solo" do
       action :delete
       recursive true
     end
