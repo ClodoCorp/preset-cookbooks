@@ -49,7 +49,6 @@ if node[:nginx][:sites].is_a?(Hash)
 end
 
 nginx_site "default" do
-  action "delete"
   disable true
 end
 

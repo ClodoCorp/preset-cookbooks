@@ -19,6 +19,9 @@ case node[:web_app][:system][:backend]
     include_recipe "apache2"
   when "php"
     include_recipe "php::module_fpm"
+    nginx_site "default" do
+      disable true
+    end
 end
 
 include_recipe "php::module_gd"
@@ -55,4 +58,5 @@ end
 execute "owner" do
   command "chown -R www-data:www-data #{node['web_app']['system']['dir']}"
 end
+
 
