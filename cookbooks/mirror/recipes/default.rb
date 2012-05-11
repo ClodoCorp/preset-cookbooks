@@ -17,9 +17,7 @@ execute "clean" do
 end
 
 execute "install" do
-  environment ({'PATH' => '/sbin:/bin:/usr/sbin:/usr/bin:/usr/local/go/bin', 'GOBIN' => '/usr/sbin', 'GOPATH' => '/root/go'})
-  cwd "/root"
-  command "go get -u -v -x bitbucket.org/vase/pkgcached"
+  command "GOPATH=/root/go GOBIN=/usr/sbin PATH=$PATH:/usr/local/go/bin go get -u -v -x bitbucket.org/vase/pkgcached"
 end
 
 execute "init" do

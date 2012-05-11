@@ -9,9 +9,6 @@
       "downloads": "",
       "dir": "/var/www/mirror",
       "pass": ""
-    },
-    "ui": {
-      "domain" : "домен"
     }
   },
   "run_list": [
