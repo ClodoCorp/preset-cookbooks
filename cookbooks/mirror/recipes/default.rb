@@ -12,6 +12,10 @@ end
 
 package "git-core"
 
+execute "clean" do
+  command "rm -rf /root/go; mkdir -p /root/go; rm -f /var/log/pkgcached.log"
+end
+
 execute "install" do
   environment ({'PATH' => '/sbin:/bin:/usr/sbin:/usr/bin:/usr/local/go/bin', 'GOBIN' => '/usr/sbin', 'GOPATH' => '/root/go'})
   cwd "/root"
@@ -32,6 +36,10 @@ end
 
 execute "defaults" do
   command "update-rc.d pkgcached defaults"
+end
+
+execute "purge" do
+  command "rm -rf /var/tmp/pkgcached_*"
 end
 
 execute "restart" do
