@@ -7,12 +7,9 @@ version          "0.8.4"
 
 recipe "wordpress", "Installs and configures wordpress LAMP stack on a single system"
 
-%w{ php openssl }.each do |cb|
+%w{ nginx chef hosts apache2 mysql php openssl }.each do |cb|
   depends cb
 end
-
-depends "apache2", ">= 0.99.4"
-depends "mysql", ">= 1.0.5"
 
 %w{ debian ubuntu }.each do |os|
   supports os

@@ -4,11 +4,11 @@ include_recipe "hosts"
 
 hosts "127.0.0.1" do
   action "add"
-  host "#{node['web_app']['ui']['domain']}"
+  host node['web_app']['ui']['domain']
 end
 
 
-case node[:web_app][:system][:backend]
+case node['web_app']['system']['backend']
   when "apache"
     include_recipe "wordpress::apache_app"
   when "php"
@@ -22,7 +22,7 @@ ruby_block "setup" do
 
     timeout = 20
     host = "localhost:80"
-    real_host = "#{node['web_app']['ui']['domain']}"
+    real_host = node['web_app']['ui']['domain']
     Chef::Log.info "call get on #{host}, maximal request time: #{timeout} seconds"
     c = Curl::Easy.new() do |curl|
       curl.url = "http://#{host}/"
@@ -45,14 +45,14 @@ ruby_block "setup" do
       if c.response_code == 200
         Chef::Log.info "Step 1 success!"
         c.url = "http://#{host}/wp-admin/setup-config.php?step=2"
-	c.http_post("dbname=#{node[:web_app][:system][:name]}", "uname=#{node[:web_app][:system][:name]}",
-		    "pwd=#{node[:web_app][:system][:pass]}", "dbhost=localhost", "prefix=pref_", "submit=Отправить")
+	c.http_post("dbname=#{node['web_app']['system']['name']}", "uname=#{node['web_app']['system']['name']}",
+		    "pwd=#{node['web_app']['system']['pass']}", "dbhost=localhost", "prefix=pref_", "submit=Отправить")
 	c.perform
 	Chef::Log.info "get4: #{c.body_str}"
 	c.url = "http://#{host}/wp-admin/install.php?step=2"
-	c.http_post("weblog_title=#{node[:web_app][:ui][:title]}", "user_name=#{node[:web_app][:ui][:login]}",
-		    "admin_password=#{node[:web_app][:ui][:pass]}", "admin_password2=#{node[:web_app][:ui][:pass]}",
-		    "admin_email=#{node[:web_app][:ui][:email]}", "blog_public=1", "Submit=Install WordPress")
+	c.http_post("weblog_title=#{node['web_app']['ui']['title']}", "user_name=#{node['web_app']['ui']['login']}",
+		    "admin_password=#{node['web_app']['ui']['pass']}", "admin_password2=#{node['web_app']['ui']['pass']}",
+		    "admin_email=#{node['web_app']['ui']['email']}", "blog_public=1", "Submit=Install WordPress")
 	c.perform
 	Chef::Log.info "get5: #{c.body_str}"
       else

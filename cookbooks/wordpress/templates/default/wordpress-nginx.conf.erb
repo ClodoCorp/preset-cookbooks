@@ -15,13 +15,13 @@ server {
 
 server {
   listen 80;
-  server_name <%= @server_name %> <% @server_aliases.each do |a| %><%= "#{a}" %> <% end %>;
+  server_name <%= @server_name %> <% @server_aliases.each do |a| %><%= a %> <% end %>;
   server_name_in_redirect off;
 
   charset utf-8;
 
-  access_log <%= node['nginx']['log_dir'] %>/<%= @name %>.access_log;
-  error_log <%= node['nginx']['log_dir'] %>/<%= @name %>.error_log info;
+  access_log <%= @log_dir %>/<%= @name %>.access_log;
+  error_log <%= @log_dir %>/<%= @name %>.error_log info;
 
   root <%= @docroot %>;
   index index.php index.html index.htm default.html default.htm;
