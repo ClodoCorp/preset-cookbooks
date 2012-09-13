@@ -28,3 +28,10 @@ attribute :components, :kind_of => Array, :default => []
 attribute :deb_src, :default => false
 attribute :keyserver, :kind_of => String, :default => nil
 attribute :key, :kind_of => String, :default => nil
+
+def initialize(*args)
+  super
+  @action = :add
+end
+
+

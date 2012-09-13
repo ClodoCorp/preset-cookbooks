@@ -49,7 +49,7 @@ end
   end
 end
 
-directory "#{Chef::Config[:file_cache_path]}" do
+directory Chef::Config[:file_cache_path] do
   mode 0700
   owner "root"
   group "root"

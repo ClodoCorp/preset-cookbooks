@@ -58,7 +58,7 @@ action :add do
       ignore_failure true
       action :nothing
     end.run_action(:run)
-    @new_resource.updated = true
+    new_resource.updated_by_last_action(true)
   end
 end
 
@@ -68,6 +68,6 @@ action :remove do
     file "/etc/apt/sources.list.d/#{new_resource.repo_name}.list" do
       action :delete
     end
-    @new_resource.updated = true
+    new_resource.updated_by_last_action(true)
   end
 end
