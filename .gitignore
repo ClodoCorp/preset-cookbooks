@@ -2,4 +2,5 @@
 metadata.json
 chef-solo.tar.gz
 .chef
+Cheffile.lock
 *~
