@@ -1,0 +1,21 @@
+<VirtualHost 127.0.0.1:8080>
+  ServerName <%= @server_name %>
+  ServerAlias <% @server_aliases.each do |a| %><%= a %> <% end %>
+
+  DocumentRoot <%= @docroot %>
+  RewriteEngine on
+
+  <Directory />
+    Options FollowSymLinks
+    AllowOverride None
+  </Directory>
+ 
+  <Directory <%= @docroot %>>
+    Options Indexes FollowSymLinks MultiViews
+    AllowOverride All 
+    Order allow,deny
+    allow from all
+  </Directory>
+
+</VirtualHost>
+

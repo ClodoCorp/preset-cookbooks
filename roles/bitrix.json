@@ -7,21 +7,19 @@
       "name": "bitrix",
       "version": "",
       "downloads": "",
-      "dir": "/home/bitrix",
-      "pass": ""
+      "dir": "/var/www/bitrix",
+      "pass": "",
+      "frontend": "nginx",
+      "backend": "php",
+      "database": "mysql"
     },
     "ui": {
-      "login": "Логин администратора",
-      "pass": "Пароль администратора",
       "email": "Почта администратора",
-      "domain" : "Домен",
-      "title" : "Название сайта",
-      "license": "Лицензия"
+      "domain" : "Домен"
     }
   },
   "run_list": [
          "recipe[chef::depends]",
-         "recipe[bitrix]",
-         "recipe[bitrix::clean]"
+         "recipe[bitrix]"
   ]
 }

@@ -20,7 +20,7 @@ case node['web_app']['system']['backend']
   when "php"
     include_recipe "php::module_fpm"
     nginx_site "default" do
-      disable true
+      action :disable
     end
 end
 

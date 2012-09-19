@@ -1,6 +1,8 @@
 .rake_test_cache
 metadata.json
 chef-solo.tar.gz
+tmp/*
+tmpdir/*
 .chef
 Cheffile.lock
 *~

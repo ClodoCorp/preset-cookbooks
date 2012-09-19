@@ -2,8 +2,8 @@ include_recipe "wordpress"
 include_recipe "chef::depends"
 include_recipe "hosts"
 
-hosts "127.0.0.1" do
-  action "add"
+hosts_host "127.0.0.1" do
+  action :create
   host node['web_app']['ui']['domain']
 end
 

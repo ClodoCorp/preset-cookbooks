@@ -7,7 +7,7 @@ version          "0.0.1"
 
 recipe "bitrix", "Installs and configures bitrix-env stack on a single system"
 
-%w{apache2 mysql apt nginx}.each do |cb|
+%w{apache mysql apt nginx}.each do |cb|
   depends cb
 end
 

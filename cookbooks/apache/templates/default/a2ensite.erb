@@ -1,6 +1,6 @@
 #!/bin/sh -e
 
-SYSCONFDIR='<%= node['nginx']['dir'] %>'
+SYSCONFDIR='<%= node['apache']['dir'] %>'
 
 if [ -z $1 ]; then
         echo "Which site would you like to enable?"
@@ -35,4 +35,4 @@ else
         ln -sf $SYSCONFDIR/sites-available/$SITENAME $SYSCONFDIR/sites-enabled/$SITENAME
 fi
 
-echo "Site $SITENAME installed; reload nginx to enable."
+echo "Site $SITENAME installed; reload apache to enable."
