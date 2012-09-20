@@ -2,9 +2,9 @@ include_recipe "drupal"
 include_recipe "chef::depends"
 include_recipe "hosts"
 
-hosts "127.0.0.1" do
-  action "add"
-  host "#{node['web_app']['ui']['domain']}"
+hosts_host "127.0.0.1" do
+  action :create
+  hosts << node['web_app']['ui']['domain']
 end
 
 
@@ -15,7 +15,7 @@ ruby_block "setup" do
 
     timeout = 20
     host = "localhost:80"
-    real_host = "#{node['web_app']['ui']['domain']}"
+    real_host = node['web_app']['ui']['domain']
     Chef::Log.info "call get on #{host}, maximal request time: #{timeout} seconds"
     c = Curl::Easy.new() do |curl|
       curl.url = "http://#{host}/"
@@ -76,7 +76,7 @@ ruby_block "setup" do
   action :create
 end
 
-cron "#{node['web_app']['system']['name']}" do
+cron node['web_app']['system']['name'] do
   hour "*/1"
   minute "10"
   command "/usr/bin/wget -qO - http://#{node['web_app']['ui']['domain']}/cron.php"

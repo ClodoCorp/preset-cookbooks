@@ -1,17 +1,19 @@
 include_recipe "apt"
 
-node['apache']['listen'] = [ "127.0.0.1:8080" ]
-node['apache']['listen_ssl'] = [ "127.0.0.1:443" ]
+node.default['apache']['keepalive'] = "Off"
+node.default['apache']['keepaliverequests'] = 0
+node.default['apache']['keepalivetimeout'] = 0
+node.default['apache']['listen'] = [ "127.0.0.1:8080" ]
+node.default['apache']['listen_ssl'] = [ "127.0.0.1:443" ]
+node.default['apache']['start_servers'] = 2
+node.default['apache']['min_spare_servers'] = 4
+node.default['apache']['max_spare_servers'] = 8
+node.default['apache']['server_limit'] = 100
+node.default['apache']['max_clients'] = 34
+node.default['apache']['max_requests_per_child'] = 0
+
 
 include_recipe "apache"
-
-#mount "/tmp" do
-#  pass 0
-#  device "tmpfs"
-#  fstype "tmpfs"
-#  options "nr_inodes=999k,mode=1755,size=100m"
-#  action [:mount, :enable]
-#end
 
 case node['web_app']['system']['database']
   when "mysql"
@@ -35,8 +37,6 @@ case node['web_app']['system']['database']
       source "bitrix.cnf"
       notifies :restart, resources(:service => "mysql"), :immediately
     end
-
-
 end
 
 case node['web_app']['system']['backend']
@@ -59,7 +59,7 @@ apt_repository "zend" do
   action :add
 end
 
-%w{zip zem xsl sockets optimizer-plus mysql mcrypt mbstring json gd ftp fileinfo exif curl ctype bz2 bin bcmath}.each do |pkg|
+%w{zip zem xsl sockets optimizer-plus mysql mcrypt mbstring json gd ftp fileinfo exif curl ctype bz2 bin bcmath data-cache}.each do |pkg|
   package "php-5.3-#{pkg}-zend-server"
 end
 
@@ -86,7 +86,7 @@ end
 
 package "exim4-daemon-light"
 
-%w{libapache2-mod-rpaf mysql-server nginx-full ntp openssh-server openssh-client}.each do |pkg|
+%w{cron libapache2-mod-rpaf mysql-server nginx-full ntp openssh-server openssh-client}.each do |pkg|
   package pkg
 end
 
@@ -95,14 +95,6 @@ directory node['web_app']['system']['dir'] do
   group "www-data"
   mode "0755"
   recursive true
-end
-
-template "/etc/apache2/ports.conf" do
-  source "ports.conf.erb"
-  mode "0644"
-  owner "root"
-  group "root"
-  notifies :reload, resources(:service => "apache2"), :immediately
 end
 
 apache_site "default" do
@@ -146,14 +138,6 @@ link "/usr/local/zend/etc/conf.d/bitrix.ini" do
   to "/usr/local/zend/etc/ext.d/bitrix.ini"
 end
 
-template "/etc/apache2/conf.d/preset.conf" do
-  source "apache2.conf.erb"
-  mode "0644"
-  owner "root"
-  group "root"
-  notifies :reload, resources(:service => "apache2"), :immediately
-end
-
 nginx_site node['web_app']['ui']['domain'] do
   source "#{node['web_app']['system']['name']}-nginx.conf.erb"
   variables (:docroot => node['web_app']['system']['dir'],
@@ -187,3 +171,14 @@ remote_file "#{node['web_app']['system']['dir']}/bitrixsetup.php" do
   group "www-data"
 end
 
+template "/etc/cron.d/bitrixsetup" do
+  source "bitrixsetup.cron.erb"
+  variables (:docroot => node['web_app']['system']['dir'], :cronfile => "/etc/cron.d/bitrixsetup")
+  mode "0644"
+  owner "root"
+  group "root"
+end
+
+execute "nginx fuck" do
+  command "/etc/init.d/nginx restart"
+end

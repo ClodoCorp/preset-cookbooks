@@ -22,8 +22,7 @@ underscores_in_headers on;
 server {
   listen   80 default_server backlog=1024 deferred ;
   root <%= @docroot %>;
-  index index.php;
-  charset utf-8; 
+  index index.php bitrixsetup.php;
   server_name <%= @server_name %> <% @server_aliases.each do |a| %><%= a %> <% end %>;
   server_name_in_redirect off;
 
@@ -53,6 +52,13 @@ server {
     try_files $uri $uri/ @backend;
   }
 
+  location = /bitrix/httest/test_404.php {
+    proxy_http_version 1.1;
+    proxy_set_header Connection "";
+    proxy_pass http://127.0.0.1:8080;
+  }
+
+
   location ~ \.php$ {
     try_files  $uri @backend;
     proxy_http_version 1.1;
@@ -61,7 +67,7 @@ server {
   }
 
   location @backend {
-    try_files $uri /bitrix/urlrewrite.php /index.php;
+    try_files $uri /bitrix/urlrewrite.php;
   }
 
   location ^~ /bitrix/admin/ {

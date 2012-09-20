@@ -19,6 +19,8 @@
 
 actions :add, :remove
 
+default_action :add
+
 #name of the repo, used for .repo filename
 attribute :repo_name, :kind_of => String, :name_attribute => true
 attribute :description, :kind_of => String #long description
@@ -29,3 +31,9 @@ attribute :enabled, :default => 1
 attribute :type, :kind_of => String, :default => nil
 attribute :failovermethod, :kind_of => String, :default => nil
 attribute :bootstrapurl, :kind_of => String, :default => nil
+
+def initialize(*args)
+  super
+  @action = :add
+end
+

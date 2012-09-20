@@ -16,9 +16,11 @@ end
 
 nginx_site "#{node[:web_app][:system][:name]}.conf" do
   cookbook "joomla"
-  action "create"
+  action :create
   source "joomla-nginx.conf.erb"
-  enable true
-  vars (:cache => false, :name => "#{node[:web_app][:system][:name]}", :docroot => "#{node['web_app']['system']['dir']}", :server_name => "#{node['web_app']['ui']['domain']}", :server_aliases => "#{node['hostname']}.clodo.ru")
+  variables (:cache => false, :name => "#{node[:web_app][:system][:name]}", :docroot => "#{node['web_app']['system']['dir']}", :server_name => "#{node['web_app']['ui']['domain']}", :server_aliases => "#{node['hostname']}.clodo.ru")
 end
 
+nginx_site "#{node[:web_app][:system][:name]}.conf" do
+  action :enable
+end

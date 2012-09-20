@@ -15,9 +15,11 @@ end
 
 nginx_site "#{node[:web_app][:system][:name]}.conf" do
   cookbook "modx"
-  action "create"
+  action :create
   source "modx-nginx.conf.erb"
-  enable true
-  vars (:cache => false, :name => "#{node[:web_app][:system][:name]}", :docroot => "#{node['web_app']['system']['dir']}", :server_name => "#{node['hostname']}.clodo.ru", :server_aliases => "#{node['web_app']['ui']['domain']} www.#{node['web_app']['ui']['domain']}")
+  variables (:cache => false, :name => "#{node[:web_app][:system][:name]}", :docroot => "#{node['web_app']['system']['dir']}", :server_name => "#{node['hostname']}.clodo.ru", :server_aliases => "#{node['web_app']['ui']['domain']} www.#{node['web_app']['ui']['domain']}")
 end
 
+nginx_site "#{node[:web_app][:system][:name]}.conf" do
+  action :enable
+end

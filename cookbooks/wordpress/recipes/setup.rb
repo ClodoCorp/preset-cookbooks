@@ -4,7 +4,7 @@ include_recipe "hosts"
 
 hosts_host "127.0.0.1" do
   action :create
-  host node['web_app']['ui']['domain']
+  hosts << node['web_app']['ui']['domain']
 end
 
 

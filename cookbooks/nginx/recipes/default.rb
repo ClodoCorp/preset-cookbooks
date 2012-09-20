@@ -27,3 +27,7 @@ service "nginx" do
   action [ :enable, :start ]
 end
 
+service "nginx" do
+  action :start
+end
+

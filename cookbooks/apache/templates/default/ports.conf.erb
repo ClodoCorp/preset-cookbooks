@@ -7,7 +7,7 @@
 
 <% @apache_listen_ports.each do |port| -%>
 Listen <%= port %>
-NameVirtualHost *:<%= port %>
+NameVirtualHost <%= port %>
 
 <% end -%>
 

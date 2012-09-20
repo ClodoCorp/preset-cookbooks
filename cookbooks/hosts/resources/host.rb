@@ -1,7 +1,9 @@
 actions :create, :delete
 
-attribute :name, :kind_of => String
-attribute :host, :kind_of => String
+default_action :create
+
+attribute :ip, :kind_of => String, :name_attribute => true
+attribute :hosts, :kind_of => Array, :default => []
 
 def initialize(*args)
   super

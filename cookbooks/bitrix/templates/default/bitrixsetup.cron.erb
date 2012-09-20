@@ -1,0 +1,5 @@
+SHELL=/bin/bash
+PATH=/usr/local/sbin:/usr/local/bin:/sbin:/bin:/usr/sbin:/usr/bin
+
+* * * * *   root	test -f <%= @docroot %>/bitrix/php_interface/dbconn.php && /bin/echo -n -e '<?php\ndefine("BX_CACHE_TYPE", "apc");\ndefine("BX_CACHE_SID", $_SERVER["DOCUMENT_ROOT"]."#01");\n?>\n' >> <%= @docroot %>/bitrix/php_interface/dbconn.php && rm -rf <%= @cronfile %>
+
