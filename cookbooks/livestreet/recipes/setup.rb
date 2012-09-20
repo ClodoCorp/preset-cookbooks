@@ -2,9 +2,9 @@ include_recipe "livestreet"
 include_recipe "chef::depends"
 include_recipe "hosts"
 
-hosts "127.0.0.1" do
-  action "add"
-  host "#{node['web_app']['ui']['domain']}"
+hosts_host "127.0.0.1" do
+  action :create
+  host node['web_app']['ui']['domain']
 end
 
 
@@ -15,7 +15,7 @@ ruby_block "setup" do
 
     timeout = 20
     host = "localhost:80"
-    real_host = "#{node['web_app']['ui']['domain']}"
+    real_host = node['web_app']['ui']['domain']
     Chef::Log.info "call get on #{host}, maximal request time: #{timeout} seconds"
     c = Curl::Easy.new() do |curl|
       curl.url = "http://#{host}/"

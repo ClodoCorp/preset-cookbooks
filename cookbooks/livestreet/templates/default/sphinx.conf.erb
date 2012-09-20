@@ -12,9 +12,9 @@ source lsParentSource
 {
         type            = mysql
         sql_host        = localhost
-        sql_user        = <%= node['web_app']['system']['name'] %>
-        sql_pass        = <%= node['web_app']['system']['pass'] %>
-        sql_db          = <%= node['web_app']['system']['name'] %>
+        sql_user        = <%= @sql_user %>
+        sql_pass        = <%= @sql_pass %>
+        sql_db          = <%= @sql_db %>
         sql_port        = 3306
         # Для ускорения работы прописываем путь до MySQL-го UNIX-сокета (чтобы
         # операции с БД происходили не через TCP/IP стек сервера)
@@ -34,11 +34,11 @@ source topicsSource : lsParentSource
         sql_query               = \
                 SELECT t_fast.topic_id, t_fast.topic_title, UNIX_TIMESTAMP(t_fast.topic_date_add) as topic_date_add, \
                 tc.topic_text, t_fast.topic_publish \
-		FROM <%= node['web_app']['system']['name'] %>_topic as t_fast, <%= node['web_app']['system']['name'] %>_topic_content AS tc \
+		FROM <%= @sql_db %>_topic as t_fast, <%= @sql_db %>_topic_content AS tc \
                 WHERE t_fast.topic_id=tc.topic_id AND t_fast.topic_id>=$start AND t_fast.topic_id<=$end
 
         # запрос для дробления получения топиков на неколько итераций
-	sql_query_range         = SELECT MIN(topic_id),MAX(topic_id) FROM <%= node['web_app']['system']['name'] %>_topic
+	sql_query_range         = SELECT MIN(topic_id),MAX(topic_id) FROM <%= @sql_db %>_topic
         # сколько получать объектов за итерацию
         sql_range_step          = 1000
 
@@ -49,7 +49,7 @@ source topicsSource : lsParentSource
         sql_attr_timestamp      = topic_date_add
 
         # мульти-аттрибут "теги топика"
-	sql_attr_multi  = uint tag from query; SELECT topic_id, topic_tag_id FROM <%= node['web_app']['system']['name'] %>_topic_tag
+	sql_attr_multi  = uint tag from query; SELECT topic_id, topic_tag_id FROM <%= @sql_db %>_topic_tag
 
         sql_ranged_throttle     = 0
 }
@@ -59,10 +59,10 @@ source commentsSource : lsParentSource
 {
         sql_query               = \
                         SELECT comment_id, comment_text, UNIX_TIMESTAMP(comment_date) as comment_date, comment_delete \
-			FROM <%= node['web_app']['system']['name'] %>_comment \
+			FROM <%= @sql_db %>_comment \
                         WHERE target_type='topic' AND comment_id>=$start AND comment_id<=$end
 
-		       sql_query_range         = SELECT MIN(comment_id),MAX(comment_id) FROM <%= node['web_app']['system']['name'] %>_comment
+		       sql_query_range         = SELECT MIN(comment_id),MAX(comment_id) FROM <%= @sql_db %>_comment
         sql_range_step          = 5000
 
         sql_attr_uint = comment_delete
