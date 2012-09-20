@@ -3,12 +3,12 @@
 #
 # Based on the Ubuntu apache2.conf
 
-ServerRoot "<%= node[:apache][:dir] %>"
+ServerRoot "<%= node['apache']['dir'] %>"
 
 #
 # The accept serialization lock file MUST BE STORED ON A LOCAL DISK.
 #
-<% if node[:platform] == "debian" || node[:platform] == "ubuntu" -%>
+<% if node['platform'] == "debian" || node['platform'] == "ubuntu" -%>
 LockFile /var/lock/apache2/accept.lock
 <% else %>
 LockFile logs/accept.lock
@@ -18,31 +18,31 @@ LockFile logs/accept.lock
 # PidFile: The file in which the server should record its process
 # identification number when it starts.
 #
-PidFile <%= node[:apache][:pid_file] %>
+PidFile <%= node['apache']['pid_file'] %>
 
 #
 # Timeout: The number of seconds before receives and sends time out.
 #
-Timeout <%= node[:apache][:timeout] %>
+Timeout <%= node['apache']['timeout'] %>
 
 #
 # KeepAlive: Whether or not to allow persistent connections (more than
 # one request per connection). Set to "Off" to deactivate.
 #
-KeepAlive <%= node[:apache][:keepalive] %>
+KeepAlive <%= node['apache']['keepalive'] %>
 
 #
 # MaxKeepAliveRequests: The maximum number of requests to allow
 # during a persistent connection. Set to 0 to allow an unlimited amount.
 # We recommend you leave this number high, for maximum performance.
 #
-MaxKeepAliveRequests <%= node[:apache][:keepaliverequests] %>
+MaxKeepAliveRequests <%= node['apache']['keepaliverequests'] %>
 
 #
 # KeepAliveTimeout: Number of seconds to wait for the next request from the
 # same client on the same connection.
 #
-KeepAliveTimeout <%= node[:apache][:keepalivetimeout] %>
+KeepAliveTimeout <%= node['apache']['keepalivetimeout'] %>
 
 ##
 ## Server-Pool Size Regulation (MPM specific)
@@ -55,12 +55,12 @@ KeepAliveTimeout <%= node[:apache][:keepalivetimeout] %>
 # MaxClients: maximum number of server processes allowed to start
 # MaxRequestsPerChild: maximum number of requests a server process serves
 <IfModule mpm_prefork_module>
-    StartServers          <%= node[:apache2][:start_servers] %>
-    MinSpareServers       <%= node[:apache2][:min_spare_servers] %>
-    MaxSpareServers       <%= node[:apache2][:max_spare_servers] %>
-    ServerLimit           <%= node[:apache2][:server_limit] %>
-    MaxClients            <%= node[:apache2][:max_clients] %>
-    MaxRequestsPerChild   <%= node[:apache2][:max_requests_per_child] %>
+    StartServers          <%= node['apache']['start_servers'] %>
+    MinSpareServers       <%= node['apache']['min_spare_servers'] %>
+    MaxSpareServers       <%= node['apache']['max_spare_servers'] %>
+    ServerLimit           <%= node['apache']['server_limit'] %>
+    MaxClients            <%= node['apache']['max_clients'] %>
+    MaxRequestsPerChild   <%= node['apache']['max_requests_per_child'] %>
 </IfModule>
 
 # worker MPM
@@ -71,16 +71,16 @@ KeepAliveTimeout <%= node[:apache][:keepalivetimeout] %>
 # ThreadsPerChild: constant number of worker threads in each server process
 # MaxRequestsPerChild: maximum number of requests a server process serves
 <IfModule mpm_worker_module>
-    StartServers          <%= node[:apache][:worker][:startservers] %>
-    MaxClients            <%= node[:apache][:worker][:maxclients] %>
-    MinSpareThreads       <%= node[:apache][:worker][:minsparethreads] %>
-    MaxSpareThreads       <%= node[:apache][:worker][:maxsparethreads] %>
-    ThreadsPerChild       <%= node[:apache][:worker][:threadsperchild] %>
-    MaxRequestsPerChild   <%= node[:apache][:worker][:maxrequestsperchild] %>
+    StartServers          <%= node['apache']['worker']['startservers'] %>
+    MaxClients            <%= node['apache']['worker']['maxclients'] %>
+    MinSpareThreads       <%= node['apache']['worker']['minsparethreads'] %>
+    MaxSpareThreads       <%= node['apache']['worker']['maxsparethreads'] %>
+    ThreadsPerChild       <%= node['apache']['worker']['threadsperchild'] %>
+    MaxRequestsPerChild   <%= node['apache']['worker']['maxrequestsperchild'] %>
 </IfModule>
 
-User <%= node[:apache][:user] %>
-Group <%= node[:apache][:group] %>
+User <%= node['apache']['user'] %>
+Group <%= node['apache']['group'] %>
 
 #
 # AccessFileName: The name of the file to look for in each directory
@@ -127,7 +127,7 @@ HostnameLookups Off
 # logged here.  If you *do* define an error logfile for a <VirtualHost>
 # container, that host's errors will be logged there and not here.
 #
-ErrorLog <%= node[:apache][:log_dir] %>/error.log 
+ErrorLog <%= node['apache']['log_dir'] %>/error.log 
 
 #
 # LogLevel: Control the number of messages logged to the error_log.
@@ -137,11 +137,11 @@ ErrorLog <%= node[:apache][:log_dir] %>/error.log
 LogLevel warn
 
 # Include module configuration:
-Include <%= node[:apache][:dir] %>/mods-enabled/*.load
-Include <%= node[:apache][:dir] %>/mods-enabled/*.conf
+Include <%= node['apache']['dir'] %>/mods-enabled/*.load
+Include <%= node['apache']['dir'] %>/mods-enabled/*.conf
 
 # Include ports listing
-Include <%= node[:apache][:dir] %>/ports.conf
+Include <%= node['apache']['dir'] %>/ports.conf
 
 #
 # The following directives define some format nicknames for use with
@@ -218,7 +218,7 @@ LogFormat "%{User-agent}i" agent
 
 
 # Include generic snippets of statements
-Include <%= node[:apache][:dir] %>/conf.d/
+Include <%= node['apache']['dir'] %>/conf.d/
 
 # Include the virtual host configurations:
-Include <%= node[:apache][:dir] %>/sites-enabled/
+Include <%= node['apache']['dir'] %>/sites-enabled/

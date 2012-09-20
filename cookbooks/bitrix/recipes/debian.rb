@@ -3,10 +3,40 @@ include_recipe "apt"
 node['apache']['listen'] = [ "127.0.0.1:8080" ]
 node['apache']['listen_ssl'] = [ "127.0.0.1:443" ]
 
+include_recipe "apache"
+
+#mount "/tmp" do
+#  pass 0
+#  device "tmpfs"
+#  fstype "tmpfs"
+#  options "nr_inodes=999k,mode=1755,size=100m"
+#  action [:mount, :enable]
+#end
 
 case node['web_app']['system']['database']
   when "mysql"
     include_recipe "mysql::server"
+
+    file "/etc/mysql/conf.d/preset.cnf" do
+      action :delete
+      backup 0
+    end
+
+    %w{ibdata1 ib_logfile0 ib_logfile1}.each do |f|
+      file "/var/lib/mysql/#{f}" do
+        action :delete
+        backup 0
+      end
+    end
+
+    cookbook_file "/etc/mysql/conf.d/bitrix.cnf" do
+      owner "root"
+      group "root"
+      source "bitrix.cnf"
+      notifies :restart, resources(:service => "mysql"), :immediately
+    end
+
+
 end
 
 case node['web_app']['system']['backend']
@@ -138,12 +168,6 @@ end
 
 nginx_site "default" do
   action :disable
-end
-
-cookbook_file "/etc/mysql/conf.d/99_bitrix.cnf" do
-  owner "root"
-  group "root"
-  source "bitrix.cnf"
 end
 
 cookbook_file "/etc/sysctl.d/bitrix.conf" do

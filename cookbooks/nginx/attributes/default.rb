@@ -1,6 +1,6 @@
 case platform
 when "debian","ubuntu"
-  set['nginx']['dir]     = "/etc/nginx"
+  set['nginx']['dir']     = "/etc/nginx"
   set['nginx']['log_dir'] = "/var/log/nginx"
   set['nginx']['user']    = "www-data"
   set['nginx']['binary']  = "/usr/sbin/nginx"
@@ -28,7 +28,7 @@ default['nginx']['gzip_types'] = [
 ]
 default['nginx']['keepalive']          = "on"
 default['nginx']['keepalive_timeout']  = 65
-default['nginx']['worker_processes']   = cpu[:total]
+default['nginx']['worker_processes']   = cpu['total']
 default['nginx']['worker_connections'] = 2048
 default['nginx']['worker_rlimit_nofile'] = node['nginx']['worker_connections'].to_i * node['nginx']['worker_processes'].to_i
 default['nginx']['server_names_hash_bucket_size'] = 128
